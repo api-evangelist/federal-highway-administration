@@ -21,8 +21,7 @@ specificationVersion: '0.19'
 apis:
   - aid: federal-highway-administration:federal-highway-administration
     name: Federal Highway Administration
-    tags:
-      - API
+    tags: []
     humanURL: https://highways.dot.gov
     properties:
       - url: https://highways.dot.gov
