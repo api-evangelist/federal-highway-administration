@@ -30,6 +30,10 @@ apis:
       The Federal Highway Administration provides stewardship over the Nation's
       highways, bridges and tunnels.
 common:
+  - type: GitHubOrganization
+    url: https://github.com/FHWA
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/federal-highway-administration
   - type: Website
     url: https://highways.dot.gov
 maintainers:
