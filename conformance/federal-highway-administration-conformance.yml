@@ -1,0 +1,159 @@
+generated: '2026-09-09'
+method: derived
+source: >-
+  openapi/federal-highway-administration-v2x-app-api-openapi.json,
+  grpc/federal-highway-administration-geohash-routed-msg.proto,
+  https://github.com/usdot-fhwa-stol/v2x-app-api/blob/develop/README.md,
+  https://github.com/usdot-fhwa-stol/c2c-ri
+provider: Federal Highway Administration
+providerId: federal-highway-administration
+description: >-
+  Standards conformance asserted by FHWA's own published contracts. Every entry below cites
+  the exact location in a contract or repository that carries the claim; nothing is
+  inferred from marketing prose. Entries marked conforms:false are recorded so the absence
+  is legible, not to penalise.
+entries:
+  - id: sae-j2735
+    name: SAE J2735 Message Set Dictionary (V2X)
+    domain_standard: true
+    conforms: true
+    evidence: >-
+      openapi/federal-highway-administration-v2x-app-api-openapi.json —
+      components.schemas.DepositRequest.properties.asn1_hex.description: "UPER-encoded
+      MessageFrame containing a MAP or TIM V2X Message in hexadecimal format". MessageFrame,
+      MAP and TIM are SAE J2735 constructs, and the deposit surface accepts nothing else.
+    note: >-
+      This is the domain-standard signature for the connected-vehicle market: an operator
+      who already speaks J2735 needs no bespoke connector to deposit into this API.
+  - id: sae-j2540-itis
+    name: SAE J2540 ITIS phrase lists
+    domain_standard: true
+    conforms: true
+    evidence: >-
+      openapi/federal-highway-administration-v2x-app-api-openapi.json — the "TIM
+      Configuration" tag is described as "TIM ITIS phrases and metadata configuration
+      endpoints", and components.schemas.TimPhrase carries a `codes` array of ITIS codes.
+  - id: asn1-uper
+    name: ASN.1 Unaligned Packed Encoding Rules
+    conforms: true
+    evidence: >-
+      components.schemas.DepositRequest.properties.asn1_hex (UPER-encoded MessageFrame);
+      the README documents a native J2735 codec bound through the Java Foreign Function &
+      Memory API for UPER/XER/JSON conversion.
+  - id: geojson
+    name: GeoJSON (RFC 7946) geometry shapes
+    conforms: true
+    evidence: >-
+      components.schemas Geometry, LineString, MultiLineString, Polygon, MultiPolygon,
+      GeofenceFeature and GeofenceFeatureCollection; the "Path Management" tag is described
+      as "Path management endpoints for GeoJSON-like path data".
+    note: >-
+      The contract uses GeoJSON shapes and the docs say "GeoJSON-like"; it does not cite
+      RFC 7946 by name. Recorded on the schema evidence, with the hedge the provider used.
+  - id: geohash
+    name: Geohash spatial index
+    conforms: true
+    evidence: >-
+      Path parameter `geohash` on /prd/v2/deposit/geofence/deployments/geohash/{geohash};
+      grpc/federal-highway-administration-geohash-routed-msg.proto field `geohash`.
+  - id: oauth2
+    name: OAuth 2.0
+    conforms: partial
+    evidence: >-
+      README: "OAuth2 Resource Server with Keycloak integration"; the contract exposes
+      POST /auth/token. But components.securitySchemes declares only an http/bearer scheme,
+      not an oauth2 flow object, so no authorization/token URLs and no scopes are expressed
+      machine-readably.
+  - id: oidc
+    name: OpenID Connect
+    conforms: partial
+    evidence: >-
+      README: Keycloak is deployed as the "OAuth2/OIDC provider" on port 8084. No
+      /.well-known/openid-configuration is served by FHWA — the discovery document belongs
+      to the operator's own Keycloak instance, not to a host FHWA runs.
+  - id: protobuf
+    name: Protocol Buffers (proto3)
+    conforms: true
+    evidence: >-
+      grpc/federal-highway-administration-geohash-routed-msg.proto — `syntax = "proto3"`,
+      message GeoHashRoutedMsg, published in usdot-fhwa-stol/v2x-app-api.
+  - id: mqtt
+    name: MQTT
+    conforms: true
+    evidence: >-
+      Contract tag "Registration" — "ETX client registration endpoints for the MQTT
+      Broker"; deposits are deployed to the ETX MQTT Broker.
+  - id: openapi
+    name: OpenAPI 3.1.0
+    conforms: true
+    evidence: >-
+      openapi/federal-highway-administration-v2x-app-api-openapi.json declares
+      "openapi": "3.1.0".
+  - id: ntcip-2306
+    name: NTCIP 2306 v1.69 WSDL/SOAP
+    conforms: true
+    evidence: >-
+      https://github.com/usdot-fhwa-stol/c2c-ri — the Center-To-Center Reference
+      Implementation is FHWA's conformance-TEST tool for NTCIP 2306 v1.69 WSDL/SOAP, per
+      the repository description.
+    note: >-
+      FHWA publishes the conformance tester, not a conforming endpoint. No WSDL is served
+      anywhere on the FHWA estate; see the wsdl probe note below.
+  - id: ite-tmdd
+    name: ITE Traffic Management Data Dictionary (TMDD) v3.03c / v3.03d / v3.1
+    domain_standard: true
+    conforms: true
+    evidence: >-
+      https://github.com/usdot-fhwa-stol/c2c-ri repository description — the C2C RI
+      "supports conformance testing for the Institute of Transportation Engineers (ITE)
+      Traffic Management Data Dictionary (TMDD) v3.03c, TMDD v3.03d and TMDD v3.1
+      standards".
+  - id: rfc9457
+    name: RFC 9457 Problem Details for HTTP APIs
+    conforms: false
+    evidence: >-
+      No application/problem+json media type appears in the contract; errors use the vendor
+      envelopes ErrorResponse and KeycloakErrorResponse. See
+      errors/federal-highway-administration-problem-types.yml.
+  - id: idempotency
+    name: HTTP idempotency keys
+    conforms: false
+    evidence: >-
+      No Idempotency-Key header is declared on any of the 21 mutating operations. See
+      conventions/federal-highway-administration-conventions.yml.
+  - id: pagination
+    name: Collection pagination
+    conforms: false
+    evidence: No page/limit/cursor/offset parameter appears anywhere in the contract.
+  - id: fedramp
+    name: FedRAMP authorization
+    conforms: false
+    evidence: >-
+      Probed for a trust center and a published certification list with
+      probe-security-programs.py on 2026-09-09 — none found. FHWA publishes source and
+      containers rather than operating a hosted service, so there is no FedRAMP boundary to
+      authorize.
+  - id: dcat
+    name: DCAT / data.gov catalog metadata
+    conforms: unknown
+    evidence: >-
+      FHWA datasets are catalogued on data.gov, but /.well-known/api-catalog and every
+      other discovery path on highways.dot.gov answered 403 behind an edge bot challenge on
+      2026-09-09, so this could not be established from FHWA's own surface.
+negative_probes:
+  - target: wsdl
+    hosts_probed: [highways.dot.gov, infobridge.fhwa.dot.gov, gis.fhwa.dot.gov, fhwaapps.fhwa.dot.gov]
+    github_code_search: 'org:usdot-fhwa-stol extension:wsdl'
+    result: 0 results
+    note: >-
+      FHWA tests NTCIP 2306 SOAP conformance but publishes no SOAP contract of its own.
+  - target: asyncapi
+    github_code_search: 'org:usdot-fhwa-stol asyncapi'
+    result: 0 results
+    note: >-
+      An event surface plainly exists — a Kafka topic carrying GeoHashRoutedMsg protobuf at
+      1 Hz, and the ETX MQTT broker — but no AsyncAPI document describes it, so none is
+      recorded. This is the single clearest artifact gap for an FHWA reader to close.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

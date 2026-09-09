@@ -1,0 +1,139 @@
+generated: '2026-09-09'
+method: derived
+source: >-
+  openapi/federal-highway-administration-v2x-app-api-openapi.json plus
+  https://github.com/usdot-fhwa-stol/v2x-app-api/blob/develop/README.md
+provider: Federal Highway Administration
+providerId: federal-highway-administration
+api: V2X App API
+description: >-
+  Cross-cutting runtime semantics of the FHWA V2X App API, derived from the published
+  OpenAPI 3.1.0 contract and the repository README. This is a self-hosted open-source
+  component: FHWA publishes the contract and the container, and the operator runs it.
+authentication:
+  style: bearer-jwt
+  scheme: BearerAuth (http/bearer, bearerFormat JWT)
+  issuer: Keycloak (OAuth2 / OIDC), deployed alongside the API
+  token_endpoint: POST /auth/token
+  applies_to: all operations except the J2735 decode endpoints
+  note: >-
+    The contract declares a single http/bearer scheme, not an oauth2 flow object, so no
+    scope vocabulary is expressed in the spec. Authorization is role-based inside Keycloak.
+  see: authentication/federal-highway-administration-authentication.yml
+versioning:
+  style: uri-path
+  current: v2
+  evidence: every business path is prefixed /prd/v2/
+  info_version: 1.0.0
+  policy_published: false
+  note: >-
+    No version-negotiation header, no deprecation policy and no release tags exist on the
+    repository; the contract's info.version (1.0.0) and the URI segment (v2) disagree.
+pagination:
+  style: none
+  note: >-
+    No page/limit/cursor/offset parameters appear anywhere in the contract. Collection
+    endpoints (getAllPaths, getAllVendorLimits, getAllActiveGeofenceDeployments) return
+    unbounded arrays.
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: false
+request_id_tracing:
+  supported: false
+  note: No correlation/request-id header is declared on any request or response.
+idempotency:
+  coverage: none
+  mechanism: null
+  header: null
+  scope: []
+  note: >-
+    The contract declares no Idempotency-Key header and no replay-protection semantics.
+    Several writes are natural upserts by identity — createOrUpdateVendorLimits,
+    createOrUpdateUserLimits, createPath ("Create or update path"), updateGeofence — so a
+    repeated call converges rather than duplicating, but that is a property of those four
+    operations, not a documented idempotency guarantee across the 21-operation mutating
+    surface. `deposit` (POST /prd/v2/deposit/geofence) has no dedupe key at all: replaying
+    it re-deposits the V2X message to the ETX MQTT broker.
+error_envelope:
+  format: vendor-json
+  rfc9457: false
+  shapes:
+    - ErrorResponse {error, description}
+    - KeycloakErrorResponse {timestamp, status, error, path}
+  see: errors/federal-highway-administration-problem-types.yml
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: null
+  note: >-
+    No 429 response is declared on any operation and no RateLimit-*/X-RateLimit-*/Retry-After
+    header appears in the contract. The API does model *registration* quotas — vendor and
+    user limits under /prd/v2/admin/ — but those cap how many ETX registrations a party may
+    hold, not request rate.
+  see: rate-limits/federal-highway-administration-rate-limits.yml
+content_types:
+  request: application/json
+  response:
+    - application/json
+    - application/gzip (downloadTimIcons)
+dry_run_mode:
+  supported: false
+  note: No preview/validate/dry-run parameter is declared on any mutating operation.
+reversibility:
+  grade: documented
+  applies: true
+  note: >-
+    Every create in this API has a matching delete or clear operation in the same contract,
+    so a write can be taken back. NO WINDOW is stated anywhere in the contract or the
+    README, which is why this grades `documented` and not `verified` — an agent can see
+    that reversal exists but cannot learn from FHWA how long it has to use it.
+  write_surfaces:
+    - operation: createGeofence
+      reversal: deleteGeofence
+      path: DELETE /prd/v2/configurations/geofence
+      window: null
+    - operation: createGeofence
+      reversal: clearGeofences
+      path: POST /prd/v2/configurations/clear
+      window: null
+      note: Bulk reversal — clears multiple geofences in one call.
+    - operation: createPath
+      reversal: deletePath
+      path: DELETE /prd/v2/paths/{id}
+      window: null
+    - operation: postRegistration
+      reversal: cleanupVendorRegistrations
+      path: GET /prd/v2/registration/cleanup/vendor/{vendorId}
+      window: null
+      note: >-
+        Described as "Clean up old registrations for vendor". The contract does not state
+        what "old" means, so the retention window is unknown.
+    - operation: deposit
+      reversal: deleteGeofence_1
+      path: DELETE /prd/v2/deposit/geofence
+      window: null
+      note: >-
+        Deletes the geofence by identifier, which withdraws the deployment. A separate
+        expiration service (triggerCleanup, getExpiredGeofenceDeployments,
+        getCleanupStatus) reaps expired deployments on an operator-configured interval —
+        GEOFENCE_CLEANUP_INTERVAL, default 5m per sample.env — but that interval is a
+        deployment setting, not a published guarantee, so it is not recorded as a window.
+    - operation: createOrUpdateVendorLimits
+      reversal: deleteVendorLimits
+      path: DELETE /prd/v2/admin/vendor-limits/{vendorId}
+      window: null
+    - operation: createOrUpdateUserLimits
+      reversal: deleteUserLimits
+      path: DELETE /prd/v2/admin/user-limits/user/{username}/vendor/{vendorId}
+      window: null
+cross_links:
+  errors: errors/federal-highway-administration-problem-types.yml
+  lifecycle: lifecycle/federal-highway-administration-lifecycle.yml
+  authentication: authentication/federal-highway-administration-authentication.yml
+  rate_limits: rate-limits/federal-highway-administration-rate-limits.yml
+  data_model: data-model/federal-highway-administration-data-model.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

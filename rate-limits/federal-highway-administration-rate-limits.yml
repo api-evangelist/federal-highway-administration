@@ -3,87 +3,55 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: Federal Highway Administration
 providerId: federal-highway-administration
+generated: '2026-09-09'
+method: searched
+source: >-
+  openapi/federal-highway-administration-v2x-app-api-openapi.json,
+  https://github.com/usdot-fhwa-stol/v2x-app-api/blob/develop/README.md
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-09'
 tags:
   - Federal Government
   - Transportation
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Federal Highway Administration API surface.
-  Captures per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold
-  values to be replaced with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
-responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
-limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Federal Highway Administration
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Federal Highway Administration
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Federal Highway Administration
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Federal Highway Administration
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Federal Highway Administration
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+description: >-
+  FHWA publishes no rate limits. The V2X App API contract declares no 429 response on any of
+  its 40 operations and no RateLimit-*, X-RateLimit-* or Retry-After header anywhere. This
+  file replaces a 2026-05-04 bulk-sweep scaffold that invented free/professional/enterprise
+  request ceilings and a full set of response headers; none of them appear in any FHWA
+  contract or document.
+limit_count: 0
+limits: []
+headers: {}
+responseCodes: {}
+observed:
+  status_429_declared: false
+  rate_limit_headers_declared: false
+  retry_after_declared: false
+  probed_operations: 40
+adjacent_quotas:
+  note: >-
+    The API does model quotas, but they are REGISTRATION limits, not request rates: the
+    /prd/v2/admin/vendor-limits and /prd/v2/admin/user-limits surfaces cap how many ETX
+    MQTT registrations a vendor or a user may hold. The ceiling values are set by whoever
+    operates the deployment; FHWA publishes no defaults.
+  operations:
+    - getAllVendorLimits
+    - createOrUpdateVendorLimits
+    - getAllUserLimits
+    - createOrUpdateUserLimits
+  schemas:
+    - VendorLimitsRequest
+    - VendorLimitsResponse
+    - UserLimitsRequest
+    - UserLimitsResponse
+gap:
+  finding: >-
+    An agent calling this API has no runtime backpressure signal. Nothing tells it when to
+    slow down and nothing tells it when to retry.
+  remedy_for_provider: >-
+    Declare a 429 response and emit RFC 9331-style RateLimit-Limit / RateLimit-Remaining /
+    RateLimit-Reset plus Retry-After, and document them in the OpenAPI contract.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

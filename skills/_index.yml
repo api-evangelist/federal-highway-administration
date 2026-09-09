@@ -1,0 +1,29 @@
+generated: '2026-09-09'
+method: generated
+source: openapi/federal-highway-administration-v2x-app-api-openapi.json
+provider: Federal Highway Administration
+providerId: federal-highway-administration
+description: >-
+  Packaged Agent Skills for the FHWA V2X App API, generated from the operations the published
+  OpenAPI 3.1.0 contract actually declares. Every operationId named in these skills was
+  grepped out of that contract. FHWA publishes no skills or AGENTS.md of its own.
+api: V2X App API
+note: >-
+  The API is a self-hosted open-source component. Every skill assumes the caller has been
+  given the base URL of a running instance — FHWA operates none.
+skills:
+  - name: deposit-v2x-message
+    file: federal-highway-administration-deposit-v2x-message.md
+    operations: 7
+    summary: Authenticate, geofence, deposit a J2735 MAP/TIM message, verify, withdraw.
+  - name: manage-etx-registration
+    file: federal-highway-administration-manage-etx-registration.md
+    operations: 6
+    summary: Register and connect an ETX MQTT client, and clean up stale registrations.
+  - name: manage-registration-limits
+    file: federal-highway-administration-manage-registration-limits.md
+    operations: 9
+    summary: Read and set per-vendor and per-user ETX registration quotas.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

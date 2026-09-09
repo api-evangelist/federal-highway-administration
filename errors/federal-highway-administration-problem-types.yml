@@ -1,0 +1,186 @@
+generated: '2026-09-09'
+method: derived
+source: openapi/federal-highway-administration-v2x-app-api-openapi.json
+provider: Federal Highway Administration
+providerId: federal-highway-administration
+api: V2X App API
+format: vendor-json
+rfc9457: false
+description: Error catalog derived from the 4xx/5xx responses declared in the FHWA V2X App API OpenAPI
+  3.1.0 contract. The API does NOT use RFC 9457 application/problem+json; it returns two vendor envelopes
+  — ErrorResponse {error, description} for application errors and KeycloakErrorResponse {timestamp, status,
+  error, path} for the Spring Security / Keycloak authentication layer.
+envelopes:
+- name: ErrorResponse
+  media_type: application/json
+  fields:
+  - name: error
+    type: string
+  - name: description
+    type: string
+  schema: '#/components/schemas/ErrorResponse'
+- name: KeycloakErrorResponse
+  media_type: application/json
+  fields:
+  - name: timestamp
+    type: integer
+  - name: status
+    type: integer
+  - name: error
+    type: string
+  - name: path
+    type: string
+  schema: '#/components/schemas/KeycloakErrorResponse'
+problem_types:
+- code: 400
+  title: Bad Request
+  occurrences: 16
+  media_types:
+  - '*/*'
+  - application/json
+  response_descriptions:
+  - Bad request - invalid clear criteria
+  - Bad request - invalid configuration data
+  - Bad request - invalid connection data
+  - Bad request - invalid data
+  - Bad request - invalid device ID
+  - Bad request - invalid geofence ID
+  operations:
+  - checkRegistration
+  - clearGeofences
+  - createGeofence
+  - createOrUpdateUserLimits
+  - createOrUpdateVendorLimits
+  - createPath
+  - deleteGeofence
+  - deleteGeofence_1
+  - deposit
+  - getGeofence
+  - postConnection
+  - postRegistration
+- code: 401
+  title: Unauthorized
+  occurrences: 33
+  media_types:
+  - '*/*'
+  - application/json
+  response_descriptions:
+  - Authentication failed - invalid credentials
+  - Unauthorized - invalid or missing authentication
+  operations:
+  - checkRegistration
+  - cleanupVendorRegistrations
+  - clearGeofences
+  - createGeofence
+  - createOrUpdateUserLimits
+  - createOrUpdateVendorLimits
+  - deleteGeofence
+  - deleteGeofence_1
+  - deleteUserLimits
+  - deleteVendorLimits
+  - deposit
+  - getAllActiveGeofenceDeployments
+- code: 403
+  title: Forbidden
+  occurrences: 32
+  media_types:
+  - '*/*'
+  - application/json
+  response_descriptions:
+  - Forbidden - insufficient permissions
+  operations:
+  - checkRegistration
+  - cleanupVendorRegistrations
+  - clearGeofences
+  - createGeofence
+  - createOrUpdateUserLimits
+  - createOrUpdateVendorLimits
+  - deleteGeofence
+  - deleteGeofence_1
+  - deleteUserLimits
+  - deleteVendorLimits
+  - deposit
+  - getAllActiveGeofenceDeployments
+- code: 404
+  title: Not Found
+  occurrences: 14
+  media_types:
+  - '*/*'
+  - application/json
+  response_descriptions:
+  - Geofence deployment not found
+  - Not found - device not found
+  - Not found - device not registered
+  - Not found - geofence not found
+  - Not found - no geofence found with the specified identifier
+  - Path not found
+  operations:
+  - checkRegistration
+  - deleteGeofence
+  - deleteGeofence_1
+  - deletePath
+  - deleteUserLimits
+  - deleteVendorLimits
+  - getGeofence
+  - getGeofenceDeployment
+  - getGeofenceGeohashes
+  - getPathById
+  - getTimConfiguration
+  - getVendorLimitsByVendorId
+- code: 409
+  title: Conflict
+  occurrences: 1
+  media_types:
+  - application/json
+  response_descriptions:
+  - Conflict - no available geohash or conflicting state
+  operations:
+  - deposit
+- code: 413
+  title: Payload Too Large
+  occurrences: 1
+  media_types:
+  - application/json
+  response_descriptions:
+  - Payload too large - exceeds maximum allowed geohashes
+  operations:
+  - deposit
+- code: 422
+  title: Unprocessable Entity
+  occurrences: 1
+  media_types:
+  - application/json
+  response_descriptions:
+  - Unprocessable entity - invalid ASN.1 data
+  operations:
+  - deposit
+- code: 500
+  title: Internal Server Error
+  occurrences: 40
+  media_types:
+  - '*/*'
+  - application/json
+  response_descriptions:
+  - Internal server error
+  - Internal server error - registration or connection failed
+  operations:
+  - checkRegistration
+  - cleanupVendorRegistrations
+  - clearGeofences
+  - createGeofence
+  - createOrUpdateUserLimits
+  - createOrUpdateVendorLimits
+  - createPath
+  - deleteGeofence
+  - deleteGeofence_1
+  - deletePath
+  - deleteUserLimits
+  - deleteVendorLimits
+gaps:
+- No stable machine-readable error code vocabulary is published — the `error` field is free text.
+- No RFC 9457 problem+json representation and no `type` URI, so an agent cannot key on a canonical error
+  identity.
+- No Retry-After or rate-limit signalling is declared on any response.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

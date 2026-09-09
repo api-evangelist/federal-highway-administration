@@ -1,0 +1,263 @@
+generated: '2026-09-09'
+method: derived
+source: openapi/federal-highway-administration-v2x-app-api-openapi.json
+provider: Federal Highway Administration
+providerId: federal-highway-administration
+api: V2X App API
+description: 'Entity graph derived from $ref links in the FHWA V2X App API OpenAPI contract. The core
+  domain is a V2X message deposit pipeline: a Geofence (GeoJSON FeatureCollection) scopes a DepositRequest
+  carrying a UPER-encoded SAE J2735 MessageFrame, which becomes a GeofenceDeployment routed by geohash;
+  Registration/Connection models govern the ETX MQTT broker client, and Vendor/User Limits cap how many
+  registrations each party may hold.'
+entity_count: 46
+root_entities:
+- DepositRequest
+- GeofenceFeatureCollection
+- ConfigurationGeofence
+- GeofenceDeploymentResponse
+- RegistrationPostRequest
+- PathRequest
+- VendorLimitsRequest
+- UserLimitsRequest
+- TimConfigurationResponse
+identifier_domains:
+- name: geofenceId
+  used_by:
+  - /prd/v2/deposit/geofence/deployments/{geofenceId}
+  note: Geofence deployment identifier.
+- name: geohash
+  used_by:
+  - /prd/v2/deposit/geofence/deployments/geohash/{geohash}
+  note: Geohash cell used to route messages to the ETX MQTT broker.
+- name: vendorId
+  used_by:
+  - /prd/v2/admin/vendor-limits/{vendorId}
+  note: ETX vendor identifier.
+- name: username
+  used_by:
+  - /prd/v2/admin/user-limits/user/{username}
+  note: Keycloak username.
+entities:
+- name: RegistrationPutRequest
+  fields: 1
+  required:
+  - DeviceID
+- name: Certificate
+  fields: 4
+- name: RegistrationResponse
+  fields: 2
+  relationships:
+  - type: has_one
+    target: Certificate
+    via: Certificate
+- name: ErrorResponse
+  fields: 2
+- name: ConfigurationGeofence
+  fields: 6
+  relationships:
+  - type: has_one
+    target: GeofenceFeatureCollection
+    via: geoFence
+  - type: has_many
+    target: Message
+    via: messages
+- name: DistributionSchedule
+  fields: 3
+- name: GeofenceFeature
+  fields: 3
+  description: GeoJSON Feature representing a single geometric element within a geofence
+  required:
+  - properties
+- name: GeofenceFeatureCollection
+  fields: 2
+  description: GeoJSON FeatureCollection representing a geofence area
+  relationships:
+  - type: has_many
+    target: GeofenceFeature
+    via: features
+- name: Geometry
+  fields: 1
+  required:
+  - type
+- name: Limit
+  fields: 0
+- name: LimitHeadingItem
+  fields: 0
+- name: LimitItem
+  fields: 2
+- name: LimitSpeedItem
+  fields: 0
+- name: LineString
+  fields: 0
+- name: Message
+  fields: 6
+  relationships:
+  - type: has_one
+    target: DistributionSchedule
+    via: distributionSchedule
+- name: MultiLineString
+  fields: 0
+- name: MultiPolygon
+  fields: 0
+- name: Polygon
+  fields: 0
+- name: ConfigurationGeofenceResponse
+  fields: 8
+  relationships:
+  - type: has_one
+    target: GeofenceFeatureCollection
+    via: geoFence
+  - type: has_many
+    target: Message
+    via: messages
+- name: RegistrationPostRequest
+  fields: 2
+  description: Request model for ETX registration
+  required:
+  - ClientSubtype
+  - ClientType
+- name: RegistrationConnectionPostRequest
+  fields: 5
+  required:
+  - ClientSubtype
+  - ClientType
+  - NetworkType
+  - lat
+  - long
+- name: CompleteResponse
+  fields: 2
+  relationships:
+  - type: has_one
+    target: RegistrationResponse
+    via: registration
+  - type: has_one
+    target: ConnectionResponse
+    via: connection
+- name: ConnectionResponse
+  fields: 1
+- name: PathGeometry
+  fields: 2
+  description: Path geometry
+- name: PathProperties
+  fields: 1
+  description: Path properties
+- name: PathRequest
+  fields: 5
+  description: Path request for creating or updating paths
+  required:
+  - name
+  relationships:
+  - type: has_one
+    target: PathProperties
+    via: properties
+  - type: has_one
+    target: PathGeometry
+    via: geometry
+- name: PathResponse
+  fields: 11
+  description: Path response containing GeoJSON-like structure
+  relationships:
+  - type: has_one
+    target: PathProperties
+    via: properties
+  - type: has_one
+    target: PathGeometry
+    via: geometry
+- name: DepositRequest
+  fields: 2
+  description: Request model for V2X message deposit
+  required:
+  - asn1_hex
+  relationships:
+  - type: has_one
+    target: GeofenceFeatureCollection
+    via: override_geofence
+- name: GeofenceDeploymentResponse
+  fields: 10
+  description: Response model for Geofence deployment
+  relationships:
+  - type: belongs_to
+    target: null
+    via: geofence_id
+    confidence: low
+  - type: has_one
+    target: GeofenceFeatureCollection
+    via: geojson
+- name: ConnectionPostRequest
+  fields: 4
+  required:
+  - DeviceID
+  - NetworkType
+  - lat
+  - long
+- name: ConfigurationClearGeofence
+  fields: 1
+- name: VendorLimitsRequest
+  fields: 2
+  description: Vendor limits information
+  required:
+  - maxRegistrations
+  - vendorId
+- name: VendorLimitsResponse
+  fields: 8
+  description: Vendor limits response
+- name: UserLimitsRequest
+  fields: 3
+  description: User limits information
+  required:
+  - maxRegistrations
+  - username
+  - vendorId
+- name: UserLimitsResponse
+  fields: 9
+  description: User limits response
+- name: TokenPostRequest
+  fields: 2
+  description: Request model for authentication token
+  required:
+  - password
+  - username
+- name: TokenPostResponse
+  fields: 9
+- name: KeycloakErrorResponse
+  fields: 4
+- name: TimConfigurationResponse
+  fields: 2
+  relationships:
+  - type: has_many
+    target: TimPhrase
+    via: tims
+- name: TimOverlay
+  fields: 5
+- name: TimPhrase
+  fields: 6
+  relationships:
+  - type: has_many
+    target: TimOverlay
+    via: overlays
+- name: S3Config
+  fields: 5
+- name: SecretResponse
+  fields: 4
+  relationships:
+  - type: has_one
+    target: S3Config
+    via: s3
+- name: RegistrationCheckResponse
+  fields: 5
+  relationships:
+  - type: has_one
+    target: Certificate
+    via: Certificate
+- name: PathsResponse
+  fields: 1
+  description: Response containing multiple paths in GeoJSON-like format
+  relationships:
+  - type: has_many
+    target: PathResponse
+    via: paths
+- name: ConfigurationGeofenceSummary
+  fields: 4
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

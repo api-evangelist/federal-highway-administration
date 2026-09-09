@@ -1,0 +1,83 @@
+generated: '2026-09-09'
+method: searched
+source: >-
+  https://github.com/usdot-fhwa-OPS/V2X-Hub/releases,
+  https://github.com/usdot-fhwa-stol/carma-platform/releases,
+  https://github.com/usdot-fhwa-stol/carma-streets/releases,
+  openapi/federal-highway-administration-v2x-app-api-openapi.json
+provider: Federal Highway Administration
+providerId: federal-highway-administration
+description: >-
+  Lifecycle posture for FHWA's published API-bearing software. FHWA ships open-source
+  components that operators deploy themselves, so the lifecycle signal is release cadence
+  on GitHub and Docker Hub rather than a hosted-service SLA. There is no status page, no
+  SLA, and no deprecation policy anywhere on the FHWA estate.
+versioning:
+  scheme: semver-ish (carma-system-<major.minor.patch> for CARMA, <major.minor.patch> for V2X Hub)
+  api_versioning: URI path segment — /prd/v2/ on the V2X App API
+  current:
+    - component: V2X Hub
+      version: 7.11.1
+      released: '2026-01-30'
+    - component: CARMA Platform
+      version: carma-system-4.11.0
+      released: '2025-08-14'
+    - component: CARMA Streets
+      version: carma-system-4.11.0
+      released: '2025-08-14'
+    - component: V2X App API
+      version: null
+      released: null
+      note: >-
+        Untagged and unreleased — the repository has zero tags and zero releases and ships
+        from `develop`. Last commit 2026-07-30.
+release_cadence:
+  observed: >-
+    V2X Hub cut six releases between 2024-09 and 2026-01 (7.8.1, 7.9.0, 7.10.0, 7.10.1,
+    7.11.0, 7.11.1). CARMA Platform cut carma-system-4.10.0 (2025-06-25) and 4.11.0
+    (2025-08-14) after a fourteen-month gap.
+  published_policy: false
+sla:
+  published: false
+  note: >-
+    None exists and none should be expected — FHWA operates no hosted instance of these
+    APIs. The SLA belongs to whoever deploys the container.
+status_page:
+  present: false
+  probed:
+    - url: https://status.dot.gov/
+      status: 000
+      note: DNS does not resolve.
+  note: >-
+    No status page was found for FHWA or for any of its published components. No StatusPage
+    pointer is emitted.
+deprecation_policy:
+  published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    No deprecation or sunset policy is published, and the contract declares no Deprecation
+    or Sunset response headers. No Deprecation pointer is emitted.
+deprecated_operations:
+  - operationId: postRegistrationConnection
+    method: POST
+    path: /prd/v2/registration-connection
+    marked: 'deprecated: true in the OpenAPI contract'
+    replacement_stated: false
+    sunset_date: null
+    note: >-
+      The only operation flagged deprecated in the contract. It combines postRegistration
+      and postConnection into one call; the contract does not name a successor or a removal
+      date, though the two component operations remain and are the evident path forward.
+support:
+  channels:
+    - type: github-issues
+      url: https://github.com/usdot-fhwa-stol/v2x-app-api/issues
+    - type: github-issues
+      url: https://github.com/usdot-fhwa-OPS/V2X-Hub/issues
+    - type: program-page
+      url: https://highways.dot.gov/research/operations/CARMA-engagement
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

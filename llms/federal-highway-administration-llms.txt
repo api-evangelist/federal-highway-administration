@@ -1,0 +1,71 @@
+# Federal Highway Administration
+
+> The Federal Highway Administration (FHWA) is the U.S. Department of Transportation
+> operating administration responsible for the Nation's highways, bridges and tunnels. Its
+> public API surface is not a hosted commercial product: FHWA publishes open-source,
+> self-hosted software for cooperative driving automation and V2X (vehicle-to-everything)
+> infrastructure through two GitHub organizations, and one of those components ships a
+> complete OpenAPI 3.1.0 contract.
+
+Generated 2026-09-09 by API Evangelist from FHWA's own public repositories and web estate.
+FHWA does not publish an llms.txt of its own; this file is GENERATED, not fetched.
+
+## What you can actually call
+
+FHWA operates no public API endpoint. Every contract below describes software an operator
+deploys themselves — from source or from a published container. Establish the base URL from
+whoever runs the instance; do not assume one.
+
+## Machine-readable contracts
+
+- [V2X App API — OpenAPI 3.1.0](https://github.com/usdot-fhwa-stol/v2x-app-api/blob/develop/docs/v2x-app-api-openapi.json): 29 paths, 40 operations, 46 schemas. Authentication, ETX MQTT client registration, V2X message deposit with GeoJSON geofencing, SAE J2735 decoding, path management, TIM configuration, and per-vendor/per-user registration limits. Published by the FHWA Saxton Transportation Operations Laboratory.
+- [GeoHashRoutedMsg protobuf (proto3)](https://github.com/usdot-fhwa-stol/v2x-app-api/blob/develop/kafka-producer/src/main/proto/GeoHashRoutedMsg.proto): the Kafka message the sidecar publishes at 1 Hz per active geofence — `msgBytes`, `time`, `geohash`.
+
+## Source and distribution
+
+- [usdot-fhwa-stol](https://github.com/usdot-fhwa-stol): FHWA Saxton Transportation Operations Laboratory — CARMA Platform, CARMA Cloud, CARMA Streets, V2X App API, the C2C Reference Implementation, and the CDA simulation stack.
+- [usdot-fhwa-OPS](https://github.com/usdot-fhwa-OPS): FHWA Office of Operations — V2X Hub, the roadside message handler and data aggregator.
+- [FHWA](https://github.com/FHWA): Research Data Environment visualizations, the Highway Performance Monitoring System (HPMS) tooling.
+- [Docker Hub usdotfhwastol](https://hub.docker.com/u/usdotfhwastol): 64 public images.
+- [Docker Hub usdotfhwaops](https://hub.docker.com/u/usdotfhwaops): 15 public images, including v2xhub (98k pulls).
+
+## Programs and documentation
+
+- [CARMA Program](https://highways.dot.gov/research/operations/CARMA): FHWA's multimodal open-source platform for cooperative driving automation research.
+- [CARMA Engagement](https://highways.dot.gov/research/operations/CARMA-engagement): how to reach the development team.
+- [CARMA / STOL component documentation](https://usdot-fhwa-stol.github.io/documentation/): Doxygen source documentation per component.
+- [LTBP InfoBridge](https://infobridge.fhwa.dot.gov/): the National Bridge Inventory portal. Free, no login — and no API. It is an ASP.NET/Angular application with no documented endpoint, no swagger, and no /.well-known discovery.
+
+## Standards this surface speaks
+
+SAE J2735 (MessageFrame, MAP, TIM), SAE J2540 ITIS phrases, ASN.1 UPER, GeoJSON geometry,
+geohash routing, protobuf proto3, MQTT, OAuth 2.0 / OpenID Connect via Keycloak, OpenAPI
+3.1.0. FHWA also publishes the C2C Reference Implementation, the conformance TESTER for ITE
+TMDD v3.03c/v3.03d/v3.1 and NTCIP 2306 v1.69 WSDL/SOAP — it tests those standards, it does
+not serve them.
+
+## What is NOT here — do not go looking
+
+- No hosted API, no developer portal, no API keys, no pricing, no plans. This is federal
+  open-source software, free at the point of use.
+- No rate limits: the contract declares no 429 and no RateLimit-* headers.
+- No idempotency keys on any of the 21 mutating operations.
+- No RFC 9457 problem+json — errors are `{error, description}` or
+  `{timestamp, status, error, path}`.
+- No AsyncAPI, despite a real Kafka and MQTT event surface.
+- No MCP server and no A2A agent card. Probed 2026-09-09; nothing served.
+- No /.well-known documents on any FHWA host. highways.dot.gov and www.dot.gov answer 403 to
+  every automated request including /robots.txt; the application hosts return clean 404s.
+
+## Derived artifacts in this profile
+
+- authentication/federal-highway-administration-authentication.yml
+- conventions/federal-highway-administration-conventions.yml
+- errors/federal-highway-administration-problem-types.yml
+- data-model/federal-highway-administration-data-model.yml
+- conformance/federal-highway-administration-conformance.yml
+- lifecycle/federal-highway-administration-lifecycle.yml
+- changelog/federal-highway-administration-changelog.yml
+- packages/federal-highway-administration-packages.yml
+- mcp/federal-highway-administration-mcp.yml (CANDIDATE — no server exists)
+- skills/_index.yml

@@ -1,0 +1,78 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — FHWA V2X App API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-09-09'
+  method: generated
+  source: openapi/federal-highway-administration-v2x-app-api-openapi.json
+  note: >-
+    Non-destructive Overlay of the enrichment pass's own findings. It never mutates the
+    original contract, which is stored verbatim. Every action below adds information API
+    Evangelist established from FHWA's own public repository — provenance, licence,
+    contact, the self-hosted nature of the servers block, and the cross-references to the
+    derived artifacts in this repository.
+extends: ../openapi/federal-highway-administration-v2x-app-api-openapi.json
+actions:
+  - target: $.info
+    description: Attribute the contract to its FHWA operating administration and source repository.
+    update:
+      contact:
+        name: FHWA Saxton Transportation Operations Laboratory (STOL)
+        url: https://github.com/usdot-fhwa-stol/v2x-app-api
+      x-provider: Federal Highway Administration
+      x-provider-id: federal-highway-administration
+      x-source-repository: https://github.com/usdot-fhwa-stol/v2x-app-api
+      x-source-path: docs/v2x-app-api-openapi.json
+      x-source-branch: develop
+      x-program: https://highways.dot.gov/research/operations/CARMA
+  - target: $.servers
+    description: >-
+      Record that the sole server entry is a springdoc-generated localhost placeholder, not a
+      hosted FHWA endpoint. This API is a self-hosted open-source component; the operator
+      supplies the base URL.
+    update:
+      - url: http://localhost:8080
+        description: >-
+          Generated server url (springdoc default). FHWA operates no public instance of this
+          API — it is deployed by the operator from the published repository and Docker
+          Compose stack.
+        x-deployment: self-hosted
+  - target: $
+    description: Cross-reference the derived artifacts this repository holds for the contract.
+    update:
+      x-api-evangelist:
+        authentication: authentication/federal-highway-administration-authentication.yml
+        conventions: conventions/federal-highway-administration-conventions.yml
+        errors: errors/federal-highway-administration-problem-types.yml
+        data-model: data-model/federal-highway-administration-data-model.yml
+        conformance: conformance/federal-highway-administration-conformance.yml
+        lifecycle: lifecycle/federal-highway-administration-lifecycle.yml
+        packages: packages/federal-highway-administration-packages.yml
+        skills: skills/_index.yml
+  - target: $.paths['/prd/v2/registration-connection'].post
+    description: >-
+      Annotate the one deprecated operation with the successor pair evident in the contract.
+      No sunset date is asserted, because FHWA publishes none.
+    update:
+      x-deprecation:
+        stated-by: provider
+        successor-operations:
+          - postRegistration
+          - postConnection
+        successor-source: >-
+          Inferred from the contract — this operation's own description says it performs
+          registration then connection in a single call, and both component operations
+          remain. FHWA states no successor and no removal date.
+        sunset: null
+  - target: $.components.schemas.DepositRequest
+    description: Name the domain standard the deposit payload actually carries.
+    update:
+      x-domain-standard:
+        id: sae-j2735
+        name: SAE J2735 Message Set Dictionary
+        encoding: ASN.1 UPER, hex-encoded
+        message-types:
+          - MAP
+          - TIM
+        evidence: properties.asn1_hex.description

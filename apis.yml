@@ -33,14 +33,26 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-highway-administration.png
 access: 3rd-Party
 created: '2024-12-03'
-modified: '2026-04-28'
+modified: '2026-09-09'
 position: Consuming
 tags:
   - Federal-Government
   - Transportation
+  - Highways
+  - Bridges
+  - Connected-Vehicles
+  - V2X
+  - Open-Source
+  - Open-Data
 tags_raw:
   - Federal Government
   - Transportation
+  - Highways
+  - Bridges
+  - Connected Vehicles
+  - V2X
+  - Open Source
+  - Open Data
 url: >-
   https://raw.githubusercontent.com/api-evangelist/federal-highway-administration/refs/heads/main/apis.yml
 specificationVersion: '0.23'
@@ -55,7 +67,40 @@ apis:
     description: >-
       The Federal Highway Administration provides stewardship over the Nation's
       highways, bridges and tunnels.
+  - aid: federal-highway-administration:v2x-app-api
+    name: FHWA V2X App API
+    tags:
+      - V2X
+      - Connected Vehicles
+      - Cooperative Driving Automation
+      - Geofencing
+      - SAE J2735
+    humanURL: https://github.com/usdot-fhwa-stol/v2x-app-api
+    description: >-
+      Open-source REST API published by the FHWA Saxton Transportation Operations
+      Laboratory (STOL). It sits between mobile applications and a Multi-Access Edge
+      Computing V2X broker, and provides Keycloak-backed authentication, ETX MQTT client
+      registration, deposit of UPER-encoded SAE J2735 MAP and TIM messages scoped by
+      GeoJSON geofences, J2735 decoding, GeoJSON path management, and per-vendor and
+      per-user registration limits. 29 paths, 40 operations, 46 schemas, OpenAPI 3.1.0.
+      FHWA operates NO public instance of this API — the contract's only server entry is
+      the springdoc-generated http://localhost:8080 placeholder, and the operator supplies
+      the base URL when they deploy the published container stack. baseURL is therefore
+      deliberately null rather than guessed.
+    properties:
+      - url: openapi/federal-highway-administration-v2x-app-api-openapi.json
+        type: OpenAPI
+      - url: overlays/federal-highway-administration-v2x-app-api-overlay.yaml
+        type: Overlay
+      - url: grpc/federal-highway-administration-geohash-routed-msg.proto
+        type: Protobuf
+      - url: https://github.com/usdot-fhwa-stol/v2x-app-api
+        type: SourceCode
+      - url: https://github.com/usdot-fhwa-stol/v2x-app-api/issues
+        type: Support
 common:
+  - type: Authentication
+    url: authentication/federal-highway-administration-authentication.yml
   - type: DomainSecurity
     url: security/federal-highway-administration-domain-security.yml
   - type: GitHubOrganization
@@ -64,6 +109,41 @@ common:
     url: https://www.linkedin.com/company/federal-highway-administration
   - type: Website
     url: https://highways.dot.gov
+  - type: Documentation
+    url: https://usdot-fhwa-stol.github.io/documentation/
+  - type: Support
+    url: https://github.com/usdot-fhwa-stol/v2x-app-api/issues
+  - type: Conventions
+    url: conventions/federal-highway-administration-conventions.yml
+  - type: ErrorCatalog
+    url: errors/federal-highway-administration-problem-types.yml
+  - type: DataModel
+    url: data-model/federal-highway-administration-data-model.yml
+  - type: Conformance
+    url: conformance/federal-highway-administration-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/federal-highway-administration-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/federal-highway-administration-changelog.yml
+  - type: Packages
+    url: packages/federal-highway-administration-packages.yml
+  - type: Plans
+    url: plans/federal-highway-administration-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/federal-highway-administration-rate-limits.yml
+  - type: FinOps
+    url: finops/federal-highway-administration-finops.yml
+  - type: LLMsTxt
+    url: llms/federal-highway-administration-llms.txt
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: X-MCPServerCandidate
+    url: mcp/federal-highway-administration-mcp.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-09'
+  status: enriched
+  artifacts_added: 18
+  pass: local-v3

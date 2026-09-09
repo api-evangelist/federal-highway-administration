@@ -1,0 +1,15 @@
+generated: '2026-09-09'
+method: derived
+source: openapi/federal-highway-administration-v2x-app-api-openapi.json
+summary:
+  types:
+  - http
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Keycloak JWT Bearer Token. Required for all endpoints except decode endpoints.
+    Obtain a token from the /auth/token endpoint using your credentials.
+  sources:
+  - openapi/federal-highway-administration-v2x-app-api-openapi.json

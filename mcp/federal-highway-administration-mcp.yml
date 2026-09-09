@@ -1,0 +1,451 @@
+generated: '2026-09-09'
+method: derived
+source: openapi/federal-highway-administration-v2x-app-api-openapi.json
+provider: Federal Highway Administration
+providerId: federal-highway-administration
+status: candidate
+name: federal-highway-administration-v2x-app-api
+description: CANDIDATE tool list derived from the 40 operations of the FHWA V2X App API OpenAPI 3.1.0
+  contract. FHWA ships no MCP server — hosted or stdio — and none was found by search on 2026-09-09. Nothing
+  here is a live agent surface; it is what an MCP server over this contract would expose if someone built
+  one, and every tool inherits its real input schema from the named operationId in the contract.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: derived
+  note: No MCP server exists. The underlying API is itself self-hosted — an operator would have to run
+    both the V2X App API and any MCP bridge over it, and would supply the Keycloak JWT.
+auth:
+  scheme: BearerAuth (http/bearer, JWT from Keycloak)
+  token_endpoint: POST /auth/token
+  note: Applies to every operation except the J2735 decode endpoints.
+tool_count: 40
+tools:
+- name: checkRegistration
+  description: Check registration status
+  method: GET
+  path: /prd/v2/registration
+  operationId: checkRegistration
+  tags:
+  - Registration
+  parameters:
+  - name: DeviceID
+    in: query
+    required: true
+    type: string
+- name: putRegistration
+  description: Update ETX client registration
+  method: PUT
+  path: /prd/v2/registration
+  operationId: putRegistration
+  tags:
+  - Registration
+  parameters:
+  - name: retry
+    in: query
+    required: false
+    type: boolean
+  - name: num_retries
+    in: query
+    required: false
+    type: integer
+  - name: num_sec_to_sleep
+    in: query
+    required: false
+    type: integer
+  requestBody: RegistrationPutRequest
+- name: postRegistration
+  description: Register ETX client
+  method: POST
+  path: /prd/v2/registration
+  operationId: postRegistration
+  tags:
+  - Registration
+  parameters:
+  - name: retry
+    in: query
+    required: false
+    type: boolean
+  - name: num_retries
+    in: query
+    required: false
+    type: integer
+  - name: num_sec_to_sleep
+    in: query
+    required: false
+    type: integer
+  requestBody: RegistrationPostRequest
+- name: getGeofence
+  description: Get geofence by ID
+  method: GET
+  path: /prd/v2/configurations/geofence
+  operationId: getGeofence
+  tags:
+  - configuration-rest-controller
+  parameters:
+  - name: id
+    in: query
+    required: true
+    type: string
+- name: updateGeofence
+  description: Update existing geofence
+  method: PUT
+  path: /prd/v2/configurations/geofence
+  operationId: updateGeofence
+  tags:
+  - configuration-rest-controller
+  parameters:
+  - name: id
+    in: query
+    required: true
+    type: string
+  requestBody: ConfigurationGeofence
+- name: createGeofence
+  description: Create new geofence
+  method: POST
+  path: /prd/v2/configurations/geofence
+  operationId: createGeofence
+  tags:
+  - configuration-rest-controller
+  requestBody: ConfigurationGeofence
+- name: deleteGeofence
+  description: Delete geofence
+  method: DELETE
+  path: /prd/v2/configurations/geofence
+  operationId: deleteGeofence
+  tags:
+  - configuration-rest-controller
+  parameters:
+  - name: id
+    in: query
+    required: true
+    type: string
+- name: postRegistrationConnection
+  description: Register and connect ETX client
+  method: POST
+  path: /prd/v2/registration-connection
+  operationId: postRegistrationConnection
+  tags:
+  - Registration
+  parameters:
+  - name: num_retries
+    in: query
+    required: false
+    type: integer
+  - name: num_sec_to_sleep
+    in: query
+    required: false
+    type: integer
+  requestBody: RegistrationConnectionPostRequest
+  deprecated: true
+- name: getAllPaths
+  description: Get all paths
+  method: GET
+  path: /prd/v2/paths
+  operationId: getAllPaths
+  tags:
+  - Path Management
+- name: createPath
+  description: Create or update path
+  method: POST
+  path: /prd/v2/paths
+  operationId: createPath
+  tags:
+  - Path Management
+  requestBody: PathRequest
+- name: deposit
+  description: Deposit V2X Message
+  method: POST
+  path: /prd/v2/deposit/geofence
+  operationId: deposit
+  tags:
+  - Deposit
+  requestBody: DepositRequest
+- name: deleteGeofence_1
+  description: Delete geofence by identifier
+  method: DELETE
+  path: /prd/v2/deposit/geofence
+  operationId: deleteGeofence_1
+  tags:
+  - Deposit
+  parameters:
+  - name: identifier
+    in: query
+    required: true
+    type: string
+- name: triggerCleanup
+  description: Manually trigger Geofence expiration cleanup
+  method: POST
+  path: /prd/v2/deposit/geofence/expiration/cleanup
+  operationId: triggerCleanup
+  tags:
+  - Geofence Expiration
+- name: postConnection
+  description: Establish ETX client connection
+  method: POST
+  path: /prd/v2/connection
+  operationId: postConnection
+  tags:
+  - Registration
+  requestBody: ConnectionPostRequest
+- name: clearGeofences
+  description: Clear multiple geofences
+  method: POST
+  path: /prd/v2/configurations/clear
+  operationId: clearGeofences
+  tags:
+  - configuration-rest-controller
+  requestBody: ConfigurationClearGeofence
+- name: getAllVendorLimits
+  description: Get all vendor limits
+  method: GET
+  path: /prd/v2/admin/vendor-limits
+  operationId: getAllVendorLimits
+  tags:
+  - Vendor Limits Management
+- name: createOrUpdateVendorLimits
+  description: Create or update vendor limits
+  method: POST
+  path: /prd/v2/admin/vendor-limits
+  operationId: createOrUpdateVendorLimits
+  tags:
+  - Vendor Limits Management
+  requestBody: VendorLimitsRequest
+- name: getAllUserLimits
+  description: Get all user limits
+  method: GET
+  path: /prd/v2/admin/user-limits
+  operationId: getAllUserLimits
+  tags:
+  - User Limits Management
+- name: createOrUpdateUserLimits
+  description: Create or update user limits
+  method: POST
+  path: /prd/v2/admin/user-limits
+  operationId: createOrUpdateUserLimits
+  tags:
+  - User Limits Management
+  requestBody: UserLimitsRequest
+- name: postRegistration_1
+  description: Generate authentication token
+  method: POST
+  path: /auth/token
+  operationId: postRegistration_1
+  tags:
+  - Authentication
+  requestBody: TokenPostRequest
+- name: downloadTimIcons
+  description: Download TIM icons TAR.GZ
+  method: GET
+  path: /prd/v2/tim/icons/{version}
+  operationId: downloadTimIcons
+  tags:
+  - TIM Configuration
+  parameters:
+  - name: version
+    in: path
+    required: true
+    type: string
+- name: getTimConfiguration
+  description: Get TIM configuration
+  method: GET
+  path: /prd/v2/tim/configuration
+  operationId: getTimConfiguration
+  tags:
+  - TIM Configuration
+- name: getSecretConfig
+  description: Get secret configuration
+  method: GET
+  path: /prd/v2/secrets
+  operationId: getSecretConfig
+  tags:
+  - Secret Management
+- name: cleanupVendorRegistrations
+  description: Clean up old registrations for vendor
+  method: GET
+  path: /prd/v2/registration/cleanup/vendor/{vendorId}
+  operationId: cleanupVendorRegistrations
+  tags:
+  - Registration
+  parameters:
+  - name: vendorId
+    in: path
+    required: true
+    type: string
+- name: getPathById
+  description: Get path by ID
+  method: GET
+  path: /prd/v2/paths/{id}
+  operationId: getPathById
+  tags:
+  - Path Management
+  parameters:
+  - name: id
+    in: path
+    required: true
+    type: integer
+- name: deletePath
+  description: Delete path
+  method: DELETE
+  path: /prd/v2/paths/{id}
+  operationId: deletePath
+  tags:
+  - Path Management
+  parameters:
+  - name: id
+    in: path
+    required: true
+    type: integer
+- name: getExpiredGeofenceDeployments
+  description: Get expired Geofence deployments
+  method: GET
+  path: /prd/v2/deposit/geofence/expiration/expired
+  operationId: getExpiredGeofenceDeployments
+  tags:
+  - Geofence Expiration
+- name: getCleanupStatus
+  description: Get cleanup service status
+  method: GET
+  path: /prd/v2/deposit/geofence/expiration/cleanup/status
+  operationId: getCleanupStatus
+  tags:
+  - Geofence Expiration
+- name: getAllActiveGeofenceDeployments
+  description: Get all active Geofence deployments
+  method: GET
+  path: /prd/v2/deposit/geofence/deployments
+  operationId: getAllActiveGeofenceDeployments
+  tags:
+  - Geofence Deployments
+- name: getGeofenceDeployment
+  description: Get Geofence deployment by ID
+  method: GET
+  path: /prd/v2/deposit/geofence/deployments/{geofenceId}
+  operationId: getGeofenceDeployment
+  tags:
+  - Geofence Deployments
+  parameters:
+  - name: geofenceId
+    in: path
+    required: true
+    type: string
+- name: getGeofenceGeohashes
+  description: Get geohashes for a Geofence deployment
+  method: GET
+  path: /prd/v2/deposit/geofence/deployments/{geofenceId}/geohashes
+  operationId: getGeofenceGeohashes
+  tags:
+  - Geofence Deployments
+  parameters:
+  - name: geofenceId
+    in: path
+    required: true
+    type: string
+- name: getGeofenceDeploymentsByUser
+  description: Get Geofence deployments by user
+  method: GET
+  path: /prd/v2/deposit/geofence/deployments/user/{username}
+  operationId: getGeofenceDeploymentsByUser
+  tags:
+  - Geofence Deployments
+  parameters:
+  - name: username
+    in: path
+    required: true
+    type: string
+- name: getGeofenceDeploymentsByGeohash
+  description: Get Geofence deployments by geohash
+  method: GET
+  path: /prd/v2/deposit/geofence/deployments/geohash/{geohash}
+  operationId: getGeofenceDeploymentsByGeohash
+  tags:
+  - Geofence Deployments
+  parameters:
+  - name: geohash
+    in: path
+    required: true
+    type: string
+- name: getExpiredGeofenceDeployments_1
+  description: Get expired Geofence deployments
+  method: GET
+  path: /prd/v2/deposit/geofence/deployments/expired
+  operationId: getExpiredGeofenceDeployments_1
+  tags:
+  - Geofence Deployments
+- name: getGeofences
+  description: Get all geofence IDs
+  method: GET
+  path: /prd/v2/configurations/geofence/ids
+  operationId: getGeofences
+  tags:
+  - configuration-rest-controller
+- name: getVendorLimitsByVendorId
+  description: Get vendor limits by vendor ID
+  method: GET
+  path: /prd/v2/admin/vendor-limits/{vendorId}
+  operationId: getVendorLimitsByVendorId
+  tags:
+  - Vendor Limits Management
+  parameters:
+  - name: vendorId
+    in: path
+    required: true
+    type: string
+- name: deleteVendorLimits
+  description: Delete vendor limits
+  method: DELETE
+  path: /prd/v2/admin/vendor-limits/{vendorId}
+  operationId: deleteVendorLimits
+  tags:
+  - Vendor Limits Management
+  parameters:
+  - name: vendorId
+    in: path
+    required: true
+    type: string
+- name: getUserLimitsByVendorId
+  description: Get user limits by vendor ID
+  method: GET
+  path: /prd/v2/admin/user-limits/vendor/{vendorId}
+  operationId: getUserLimitsByVendorId
+  tags:
+  - User Limits Management
+  parameters:
+  - name: vendorId
+    in: path
+    required: true
+    type: string
+- name: getUserLimitsByUsername
+  description: Get user limits by username
+  method: GET
+  path: /prd/v2/admin/user-limits/user/{username}
+  operationId: getUserLimitsByUsername
+  tags:
+  - User Limits Management
+  parameters:
+  - name: username
+    in: path
+    required: true
+    type: string
+- name: deleteUserLimits
+  description: Delete user limits
+  method: DELETE
+  path: /prd/v2/admin/user-limits/user/{username}/vendor/{vendorId}
+  operationId: deleteUserLimits
+  tags:
+  - User Limits Management
+  parameters:
+  - name: username
+    in: path
+    required: true
+    type: string
+  - name: vendorId
+    in: path
+    required: true
+    type: string
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,141 @@
+generated: '2026-09-09'
+method: probed
+source: live HTTPS probes of every host this record knows, 2026-09-09
+provider: Federal Highway Administration
+providerId: federal-highway-administration
+description: >-
+  Well-known discovery probe across the FHWA web estate and the hosts named by the
+  V2X App API contract. Nothing was served: the two public FHWA content hosts
+  (highways.dot.gov, www.dot.gov) answer 403 to every automated request including
+  /robots.txt — an edge bot challenge, not an absence — and the three application hosts
+  return a clean 404 on every path. No pointer is emitted, because nothing was found.
+result: none-served
+hosts:
+  - host: highways.dot.gov
+    note: >-
+      Edge bot challenge — every path, including /robots.txt, answers 403 to curl and to a
+      browser User-Agent. This is a blocked probe, not a recorded absence.
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 403
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+        file: null
+      - path: /.well-known/api-catalog
+        status: 403
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 403
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 403
+        file: null
+      - path: /.well-known/agent.json
+        status: 403
+        file: null
+      - path: /llms.txt
+        status: 403
+        file: null
+      - path: /robots.txt
+        status: 403
+        file: null
+  - host: www.dot.gov
+    note: Parent department host; same edge bot challenge.
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+        file: null
+      - path: /.well-known/api-catalog
+        status: 403
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 403
+        file: null
+      - path: /.well-known/agent.json
+        status: 403
+        file: null
+      - path: /llms.txt
+        status: 403
+        file: null
+  - host: infobridge.fhwa.dot.gov
+    note: LTBP InfoBridge application host. Clean 404 on every path — a recorded absence.
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /llms.txt
+        status: 404
+        file: null
+      - path: /robots.txt
+        status: 404
+        file: null
+  - host: gis.fhwa.dot.gov
+    note: GIS in Transportation site. Serves /robots.txt; nothing else.
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /llms.txt
+        status: 404
+        file: null
+      - path: /robots.txt
+        status: 200
+        file: null
+        note: robots.txt only — not a discovery document, so it earns no pointer.
+  - host: fhwaapps.fhwa.dot.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /llms.txt
+        status: 404
+        file: null
+not_probed:
+  - host: localhost:8080
+    reason: >-
+      The only server named by the V2X App API contract is the springdoc-generated
+      http://localhost:8080 placeholder. The API is a self-hosted open-source component; FHWA
+      operates no public instance, so there is no third-party host to probe.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,65 @@
+generated: '2026-09-09'
+method: searched
+source: >-
+  https://github.com/usdot-fhwa-OPS/V2X-Hub/releases,
+  https://github.com/usdot-fhwa-stol/carma-platform/releases,
+  https://github.com/usdot-fhwa-stol/carma-streets/releases
+provider: Federal Highway Administration
+providerId: federal-highway-administration
+description: >-
+  FHWA publishes no prose changelog page. The dated, versioned record of change for its
+  API-bearing software is the GitHub release stream on the two operating-administration
+  orgs, usdot-fhwa-OPS and usdot-fhwa-stol. Recent window only.
+scheme: git-tag-releases
+current_version: 7.11.1 (V2X Hub) / carma-system-4.11.0 (CARMA)
+feeds:
+  - component: V2X Hub
+    url: https://github.com/usdot-fhwa-OPS/V2X-Hub/releases
+    atom: https://github.com/usdot-fhwa-OPS/V2X-Hub/releases.atom
+  - component: CARMA Platform
+    url: https://github.com/usdot-fhwa-stol/carma-platform/releases
+    atom: https://github.com/usdot-fhwa-stol/carma-platform/releases.atom
+  - component: CARMA Streets
+    url: https://github.com/usdot-fhwa-stol/carma-streets/releases
+    atom: https://github.com/usdot-fhwa-stol/carma-streets/releases.atom
+entries:
+  - version: 7.11.1
+    component: V2X Hub
+    date: '2026-01-30'
+  - version: 7.11.0
+    component: V2X Hub
+    date: '2025-12-24'
+  - version: 7.10.1
+    component: V2X Hub
+    date: '2025-10-24'
+  - version: 7.10.0
+    component: V2X Hub
+    date: '2025-08-14'
+  - version: 7.9.0
+    component: V2X Hub
+    date: '2025-06-24'
+  - version: 7.8.1
+    component: V2X Hub
+    date: '2024-09-11'
+  - version: carma-system-4.11.0
+    component: CARMA Platform
+    date: '2025-08-14'
+  - version: carma-system-4.10.0
+    component: CARMA Platform
+    date: '2025-06-25'
+  - version: carma-system-4.11.0
+    component: CARMA Streets
+    date: '2025-08-14'
+  - version: carma-system-4.5.1
+    component: CARMA Streets
+    date: '2024-08-01'
+gaps:
+  - >-
+    No release notes body is published on the tags inspected — the release name repeats the
+    tag, so breaking-vs-additive change cannot be read from the feed.
+  - >-
+    The V2X App API, the only component with a published OpenAPI contract, has no tags and
+    no releases at all.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

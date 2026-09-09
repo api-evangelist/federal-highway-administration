@@ -3,140 +3,45 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
 provider: Federal Highway Administration
 providerId: federal-highway-administration
+generated: '2026-09-09'
+method: searched
+source: >-
+  https://github.com/usdot-fhwa-stol/v2x-app-api,
+  https://github.com/usdot-fhwa-OPS/V2X-Hub,
+  https://highways.dot.gov/research/operations/CARMA,
+  https://infobridge.fhwa.dot.gov/
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-09'
 tags:
   - Federal Government
   - Transportation
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
-plans:
-  - id: federal-highway-administration-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the Federal Highway Administration API surface. Intended for evaluation,
-      prototyping, and low-volume integrations. Real limits and pricing must be reconciled with the provider's
-      published plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Federal Highway Administration
-  - id: federal-highway-administration-pro
-    name: Professional
-    type: paid
-    description: Production tier for Federal Highway Administration. Provides higher quotas, priority
-      support, and access to the broader API portfolio. Pricing placeholder; align with the provider's
-      pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains: []
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains: []
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Federal Highway Administration
-  - id: federal-highway-administration-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for Federal Highway Administration. Includes dedicated capacity,
-      contractual SLAs, security review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains: []
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains: []
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Federal Highway Administration
+description: >-
+  FHWA publishes no API plans and no pricing, and should not be expected to. It is a U.S.
+  federal agency distributing open-source software: the V2X App API, V2X Hub and the CARMA
+  components are free to obtain, free to deploy, and carry no metering, no keys and no
+  commercial tiers. LTBP InfoBridge states outright that access is free and requires no
+  username or password. This file replaces a 2026-05-04 bulk-sweep scaffold that invented
+  Free / Professional / Enterprise tiers with fabricated quotas; none of them ever existed.
+plan_count: 0
+plans: []
+pricing_model: none-published
+access:
+  cost: free
+  registration_required: false
+  api_keys: false
+  note: >-
+    Authentication in the V2X App API is a Keycloak JWT issued by the OPERATOR'S OWN
+    Keycloak instance, not an FHWA-issued credential. There is nothing to sign up for.
+evidence:
+  - url: https://infobridge.fhwa.dot.gov/
+    status: 200
+    note: LTBP InfoBridge — free access, no account.
+  - url: https://github.com/usdot-fhwa-stol/v2x-app-api
+    status: 200
+    note: Source and OpenAPI contract, public, no gate.
+  - url: https://hub.docker.com/u/usdotfhwaops
+    status: 200
+    note: Public container distribution, no entitlement.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

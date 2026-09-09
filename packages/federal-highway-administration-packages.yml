@@ -1,0 +1,109 @@
+generated: '2026-09-09'
+method: searched
+source: >-
+  https://hub.docker.com/u/usdotfhwastol, https://hub.docker.com/u/usdotfhwaops,
+  https://github.com/usdot-fhwa-stol, https://github.com/usdot-fhwa-OPS — plus
+  negative registry probes of PyPI, npm and Maven Central (see registry_probes)
+provider: Federal Highway Administration
+providerId: federal-highway-administration
+description: >-
+  FHWA distributes its API-bearing software as container images and source releases, not as
+  client SDKs. The Saxton Transportation Operations Laboratory (usdot-fhwa-stol) and the
+  Office of Operations (usdot-fhwa-OPS) publish 64 and 15 public Docker Hub repositories
+  respectively; there is no first-party client library for the V2X App API on any public
+  language registry.
+registry_probes:
+  - registry: pypi
+    query: j2735decoder
+    status: 404
+    note: The FHWA j2735decoder library is source-only on GitHub; it is not published to PyPI.
+  - registry: npm
+    query: v2x-app-api
+    status: 404
+  - registry: maven-central
+    query: 'g:"gov.dot.fhwa"'
+    status: 200
+    result_count: 0
+    note: >-
+      The Java components (V2X App API, CARMA Cloud, C2C RI) are built from source and
+      shipped as containers; no Maven coordinates are published.
+packages:
+  - name: usdotfhwaops/v2xhub
+    registry: docker
+    url: https://hub.docker.com/r/usdotfhwaops/v2xhub
+    official: true
+    language: C++
+    kind: container
+    description: V2X Hub — roadside message handler, translator and data aggregator/disseminator.
+    version: release-wrangler
+    published: '2026-09-09'
+    note: >-
+      The Docker Hub tag stream is branch/PR-based (pr-954, release-wrangler, develop); the
+      dated semantic releases live on GitHub — 7.11.1 published 2026-01-30.
+  - name: usdotfhwaops/v2xhub-application
+    registry: docker
+    url: https://hub.docker.com/r/usdotfhwaops/v2xhub-application
+    official: true
+    kind: container
+    description: V2X Hub application container.
+    version: release-wrangler
+    published: '2026-09-09'
+  - name: usdotfhwaops/port-drayage-webservice
+    registry: docker
+    url: https://hub.docker.com/r/usdotfhwaops/port-drayage-webservice
+    official: true
+    kind: container
+    description: Port drayage web service used with V2X Hub.
+    version: release-wrangler
+    published: '2026-09-09'
+  - name: usdotfhwastol/carma-platform
+    registry: docker
+    url: https://hub.docker.com/r/usdotfhwastol/carma-platform
+    official: true
+    language: C++
+    kind: container
+    description: CARMA Platform — FHWA's open-source cooperative driving automation platform.
+    version: carma-system-4.11.0
+    published: '2025-08-14'
+    note: >-
+      A floating `master` tag was rebuilt 2026-09-01; the newest dated semantic tag is
+      carma-system-4.11.0.
+  - name: usdotfhwastol/carma-base
+    registry: docker
+    url: https://hub.docker.com/r/usdotfhwastol/carma-base
+    official: true
+    kind: container
+    description: Docker base image for the CARMA Platform.
+    version: carma-system-4.13.0-humble
+    published: '2026-07-16'
+  - name: usdotfhwastol/carma-config
+    registry: docker
+    url: https://hub.docker.com/r/usdotfhwastol/carma-config
+    official: true
+    kind: container
+    description: System configuration data for CARMA vehicle/vehicle-class deployments.
+    version: carma-system-4.11.0-demo_tfhrc_uc2_tim_cp-lexus-rx-450h-2019
+    published: '2026-08-27'
+source_releases:
+  - repo: usdot-fhwa-OPS/V2X-Hub
+    url: https://github.com/usdot-fhwa-OPS/V2X-Hub/releases
+    version: 7.11.1
+    published: '2026-01-30'
+  - repo: usdot-fhwa-stol/carma-platform
+    url: https://github.com/usdot-fhwa-stol/carma-platform/releases
+    version: carma-system-4.11.0
+    published: '2025-08-14'
+  - repo: usdot-fhwa-stol/carma-streets
+    url: https://github.com/usdot-fhwa-stol/carma-streets/releases
+    version: carma-system-4.11.0
+    published: '2025-08-14'
+  - repo: usdot-fhwa-stol/v2x-app-api
+    url: https://github.com/usdot-fhwa-stol/v2x-app-api
+    version: null
+    published: null
+    note: >-
+      No tags and no releases; the repository ships from its `develop` branch. Last commit
+      2026-07-30. A consumer cannot pin a version of the V2X App API — that is the finding.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
