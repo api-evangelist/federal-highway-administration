@@ -1,0 +1,447 @@
+openapi: 3.2.0
+info:
+  title: V2X App Geofence Deployments API
+  description: API for Vehicle-to-Everything (V2X) Multi-Access Edge Computing (MEC) services. This App API provides endpoints for ETX registration, V2X Message Deposit, and authentication services.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+security:
+- BearerAuth: []
+tags:
+- name: Geofence Deployments
+  description: Geofence deployment management endpoints
+paths:
+  /prd/v2/deposit/geofence/deployments:
+    get:
+      tags:
+      - Geofence Deployments
+      summary: Get all active Geofence deployments
+      description: Retrieves all active Geofence deployments from the database. This endpoint returns a list of all currently active Geofence deployments with their configuration details, geospatial information, and metadata.
+      operationId: getAllActiveGeofenceDeployments
+      responses:
+        '200':
+          description: Geofence deployments retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/deposit/geofence/deployments/{geofenceId}:
+    get:
+      tags:
+      - Geofence Deployments
+      summary: Get Geofence deployment by ID
+      description: Retrieves a specific Geofence deployment by its Geofence ID. This endpoint returns the complete configuration and metadata for the specified Geofence deployment.
+      operationId: getGeofenceDeployment
+      parameters:
+      - name: geofenceId
+        in: path
+        description: Geofence ID to retrieve
+        required: true
+        schema:
+          type: string
+        example: GEOFENCE_12345
+      responses:
+        '200':
+          description: Geofence deployment retrieved successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '404':
+          description: Geofence deployment not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/deposit/geofence/deployments/{geofenceId}/geohashes:
+    get:
+      tags:
+      - Geofence Deployments
+      summary: Get geohashes for a Geofence deployment
+      description: Retrieves all geohashes associated with a specific Geofence deployment. This endpoint is useful for understanding the geographical coverage of a particular Geofence deployment.
+      operationId: getGeofenceGeohashes
+      parameters:
+      - name: geofenceId
+        in: path
+        description: Geofence ID to get geohashes for
+        required: true
+        schema:
+          type: string
+        example: GEOFENCE_12345
+      responses:
+        '200':
+          description: Geohashes retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+        '404':
+          description: Geofence deployment not found
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/deposit/geofence/deployments/user/{username}:
+    get:
+      tags:
+      - Geofence Deployments
+      summary: Get Geofence deployments by user
+      description: Retrieves all active Geofence deployments deployed by a specific user. This endpoint is useful for user-specific Geofence management and auditing.
+      operationId: getGeofenceDeploymentsByUser
+      parameters:
+      - name: username
+        in: path
+        description: Username to filter by
+        required: true
+        schema:
+          type: string
+        example: admin
+      responses:
+        '200':
+          description: Geofence deployments retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/deposit/geofence/deployments/geohash/{geohash}:
+    get:
+      tags:
+      - Geofence Deployments
+      summary: Get Geofence deployments by geohash
+      description: Retrieves all Geofence deployments that cover a specific geohash. This endpoint is useful for finding Geofences relevant to a particular geographical area based on geohash precision.
+      operationId: getGeofenceDeploymentsByGeohash
+      parameters:
+      - name: geohash
+        in: path
+        description: Geohash to search for
+        required: true
+        schema:
+          type: string
+        example: 9q8yy
+      responses:
+        '200':
+          description: Geofence deployments retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/deposit/geofence/deployments/expired:
+    get:
+      tags:
+      - Geofence Deployments
+      summary: Get expired Geofence deployments
+      description: Retrieves all Geofence deployments that have expired. This endpoint is useful for monitoring and debugging expiration issues.
+      operationId: getExpiredGeofenceDeployments_1
+      responses:
+        '200':
+          description: Expired Geofence deployments retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeofenceDeploymentResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    MultiPolygon:
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: number
+                    format: double
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        description:
+          type: string
+    Polygon:
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: array
+                items:
+                  type: number
+                  format: double
+    GeofenceDeploymentResponse:
+      type: object
+      description: Response model for Geofence deployment
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Database ID of the Geofence deployment
+        geofence_id:
+          type: string
+          description: Unique identifier for the Geofence deployment
+        geojson:
+          $ref: '#/components/schemas/GeofenceFeatureCollection'
+          description: GeoJSON FeatureCollection representation of the deployment area
+        hex_payload:
+          type: string
+          description: ASN.1 encoded message in hexadecimal format
+        deployed_by:
+          type: string
+          description: Username of the person who deployed the Geofence
+        is_active:
+          type: boolean
+          description: Whether the Geofence deployment is currently active
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the Geofence was deployed
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the Geofence was last updated
+        expires_at:
+          type: string
+          format: date-time
+          description: Optional expiration timestamp for the Geofence deployment
+        geohashes:
+          type: array
+          description: List of geohashes covering the deployment area
+          items:
+            type: string
+    MultiLineString:
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: array
+                items:
+                  type: number
+                  format: double
+    GeofenceFeature:
+      type: object
+      description: GeoJSON Feature representing a single geometric element within a geofence
+      properties:
+        type:
+          type: string
+          description: GeoJSON type, must be 'Feature'
+          example: Feature
+        geometry:
+          description: GeoJSON geometry object defining the spatial extent
+          oneOf:
+          - $ref: '#/components/schemas/LineString'
+          - $ref: '#/components/schemas/MultiLineString'
+          - $ref: '#/components/schemas/MultiPolygon'
+          - $ref: '#/components/schemas/Polygon'
+        properties:
+          additionalProperties: false
+          description: 'Properties object is required and must be an empty object. No content is allowed in the properties object. Must be an empty JSON object: {}. Any properties within this object will cause validation to fail. This field enforces that the properties object contains no key-value pairs.'
+          example: {}
+      required:
+      - properties
+    GeofenceFeatureCollection:
+      type: object
+      description: GeoJSON FeatureCollection representing a geofence area
+      properties:
+        type:
+          type: string
+          description: GeoJSON type, must be 'FeatureCollection'
+          example: FeatureCollection
+        features:
+          type: array
+          description: Array of GeoJSON features defining the geofence geometry
+          items:
+            $ref: '#/components/schemas/GeofenceFeature'
+    LineString:
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: number
+                format: double
+    Geometry:
+      discriminator:
+        propertyName: type
+      properties:
+        type:
+          type: string
+      required:
+      - type
+  securitySchemes:
+    BearerAuth:
+      type: http
+      description: Keycloak JWT Bearer Token. Required for all endpoints except decode endpoints. Obtain a token from the /auth/token endpoint using your credentials.
+      scheme: bearer
+      bearerFormat: JWT

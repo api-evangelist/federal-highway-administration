@@ -1,0 +1,280 @@
+openapi: 3.2.0
+info:
+  title: V2X App Path Management API
+  description: API for Vehicle-to-Everything (V2X) Multi-Access Edge Computing (MEC) services. This App API provides endpoints for ETX registration, V2X Message Deposit, and authentication services.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+security:
+- BearerAuth: []
+tags:
+- name: Path Management
+  description: Path management endpoints for GeoJSON-like path data
+paths:
+  /prd/v2/paths:
+    get:
+      tags:
+      - Path Management
+      summary: Get all paths
+      description: Retrieves all active paths in GeoJSON-like format. This endpoint returns a collection of paths with their coordinates, timestamps, and metadata.
+      operationId: getAllPaths
+      responses:
+        '200':
+          description: Paths retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PathsResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+    post:
+      tags:
+      - Path Management
+      summary: Create or update path
+      description: Creates a new path with GeoJSON-like structure, or updates an existing path if one with the same name already exists. Only administrators can create/update paths.
+      operationId: createPath
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PathRequest'
+        required: true
+      responses:
+        '201':
+          description: Path created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PathResponse'
+        '200':
+          description: Path updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PathResponse'
+        '400':
+          description: Bad request - invalid path data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/paths/{id}:
+    get:
+      tags:
+      - Path Management
+      summary: Get path by ID
+      description: Retrieves a specific path by its ID in GeoJSON-like format.
+      operationId: getPathById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Path retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PathResponse'
+        '404':
+          description: Path not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+    delete:
+      tags:
+      - Path Management
+      summary: Delete path
+      description: Soft deletes a path by setting it as inactive. Only administrators can delete paths.
+      operationId: deletePath
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '204':
+          description: Path deleted successfully
+        '404':
+          description: Path not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        description:
+          type: string
+    PathsResponse:
+      type: object
+      description: Response containing multiple paths in GeoJSON-like format
+      properties:
+        paths:
+          type: array
+          description: List of paths
+          items:
+            $ref: '#/components/schemas/PathResponse'
+    PathProperties:
+      type: object
+      description: Path properties
+      properties:
+        name:
+          type: string
+          description: Path name
+          example: Sample path
+    PathGeometry:
+      type: object
+      description: Path geometry
+      properties:
+        type:
+          type: string
+          description: Geometry type
+          example: LineString
+        coordinates:
+          type: array
+          description: Coordinate array
+          example:
+          - - -105.01621
+            - 39.57422
+          - - -105.01623
+            - 39.57424
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+    PathRequest:
+      type: object
+      description: Path request for creating or updating paths
+      properties:
+        name:
+          type: string
+          description: Path name
+          example: Sample path
+          maxLength: 255
+          minLength: 0
+        type:
+          type: string
+          description: GeoJSON type
+          example: Feature
+        properties:
+          $ref: '#/components/schemas/PathProperties'
+          description: Path properties
+        geometry:
+          $ref: '#/components/schemas/PathGeometry'
+          description: Path geometry
+        timestamps:
+          type: array
+          description: Timestamps for each coordinate
+          example:
+          - 0
+          - 100
+          - 200
+          - 300
+          items:
+            type: integer
+            format: int64
+      required:
+      - name
+    PathResponse:
+      type: object
+      description: Path response containing GeoJSON-like structure
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier
+          example: 1
+        name:
+          type: string
+          description: Path name
+          example: Sample path
+        type:
+          type: string
+          description: GeoJSON type
+          example: Feature
+        properties:
+          $ref: '#/components/schemas/PathProperties'
+          description: Path properties
+        geometry:
+          $ref: '#/components/schemas/PathGeometry'
+          description: Path geometry
+        timestamps:
+          type: array
+          description: Timestamps for each coordinate
+          example:
+          - 0
+          - 100
+          - 200
+          - 300
+          items:
+            type: integer
+            format: int64
+        isActive:
+          type: boolean
+          description: Whether the path is active
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        createdBy:
+          type: string
+          description: User who created the path
+          example: admin
+        updatedBy:
+          type: string
+          description: User who last updated the path
+          example: admin
+  securitySchemes:
+    BearerAuth:
+      type: http
+      description: Keycloak JWT Bearer Token. Required for all endpoints except decode endpoints. Obtain a token from the /auth/token endpoint using your credentials.
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,240 @@
+openapi: 3.2.0
+info:
+  title: V2X App Vendor Limits Management API
+  description: API for Vehicle-to-Everything (V2X) Multi-Access Edge Computing (MEC) services. This App API provides endpoints for ETX registration, V2X Message Deposit, and authentication services.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+security:
+- BearerAuth: []
+tags:
+- name: Vendor Limits Management
+  description: Endpoints for managing vendor-wide registration limits
+paths:
+  /prd/v2/admin/vendor-limits:
+    get:
+      tags:
+      - Vendor Limits Management
+      summary: Get all vendor limits
+      description: Retrieves all vendor limits (Admin only)
+      operationId: getAllVendorLimits
+      responses:
+        '200':
+          description: Vendor limits retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VendorLimitsResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VendorLimitsResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VendorLimitsResponse'
+        '500':
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VendorLimitsResponse'
+      security:
+      - BearerAuth: []
+    post:
+      tags:
+      - Vendor Limits Management
+      summary: Create or update vendor limits
+      description: Creates new vendor limits or updates existing ones. Vendor limits control the total number of registrations a vendor can have across all users (Admin only)
+      operationId: createOrUpdateVendorLimits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendorLimitsRequest'
+        required: true
+      responses:
+        '200':
+          description: Vendor limits created/updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorLimitsResponse'
+        '400':
+          description: Bad request - invalid data
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VendorLimitsResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VendorLimitsResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VendorLimitsResponse'
+        '500':
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VendorLimitsResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/admin/vendor-limits/{vendorId}:
+    get:
+      tags:
+      - Vendor Limits Management
+      summary: Get vendor limits by vendor ID
+      description: Retrieves vendor limits for a specific vendor (Admin only)
+      operationId: getVendorLimitsByVendorId
+      parameters:
+      - name: vendorId
+        in: path
+        description: Vendor ID to get limits for
+        required: true
+        schema:
+          type: string
+        example: EtxVendor
+      responses:
+        '200':
+          description: Vendor limits retrieved successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VendorLimitsResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VendorLimitsResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VendorLimitsResponse'
+        '404':
+          description: Vendor limits not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VendorLimitsResponse'
+        '500':
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VendorLimitsResponse'
+      security:
+      - BearerAuth: []
+    delete:
+      tags:
+      - Vendor Limits Management
+      summary: Delete vendor limits
+      description: Deletes vendor limits for a specific vendor (Admin only)
+      operationId: deleteVendorLimits
+      parameters:
+      - name: vendorId
+        in: path
+        description: Vendor ID to delete limits for
+        required: true
+        schema:
+          type: string
+        example: EtxVendor
+      responses:
+        '200':
+          description: Vendor limits deleted successfully
+        '401':
+          description: Unauthorized - invalid or missing authentication
+        '403':
+          description: Forbidden - insufficient permissions
+        '404':
+          description: Vendor limits not found
+        '500':
+          description: Internal server error
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    VendorLimitsRequest:
+      type: object
+      description: Vendor limits information
+      properties:
+        vendorId:
+          type: string
+          description: Vendor ID for the limits
+          example: EtxVendor
+          minLength: 1
+        maxRegistrations:
+          type: integer
+          format: int32
+          description: Maximum number of total registrations this vendor can have across all users
+          example: 100
+          minimum: 1
+      required:
+      - maxRegistrations
+      - vendorId
+    VendorLimitsResponse:
+      type: object
+      description: Vendor limits response
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier
+          example: 1
+        vendorId:
+          type: string
+          description: Vendor ID
+          example: EtxVendor
+        maxRegistrations:
+          type: integer
+          format: int32
+          description: Maximum total registrations this vendor can have across all users
+          example: 100
+        isActive:
+          type: boolean
+          description: Whether the limits are active
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        createdBy:
+          type: string
+          description: User who created the limits
+          example: admin
+        updatedBy:
+          type: string
+          description: User who last updated the limits
+          example: admin
+  securitySchemes:
+    BearerAuth:
+      type: http
+      description: Keycloak JWT Bearer Token. Required for all endpoints except decode endpoints. Obtain a token from the /auth/token endpoint using your credentials.
+      scheme: bearer
+      bearerFormat: JWT

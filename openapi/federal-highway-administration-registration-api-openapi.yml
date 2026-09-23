@@ -1,0 +1,580 @@
+openapi: 3.2.0
+info:
+  title: V2X App Registration API
+  description: API for Vehicle-to-Everything (V2X) Multi-Access Edge Computing (MEC) services. This App API provides endpoints for ETX registration, V2X Message Deposit, and authentication services.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+security:
+- BearerAuth: []
+tags:
+- name: Registration
+  description: ETX client registration and connection management endpoints
+paths:
+  /prd/v2/registration:
+    get:
+      tags:
+      - Registration
+      summary: Check registration status
+      description: Checks the registration status of a device by its device ID against the ETX API
+      operationId: checkRegistration
+      parameters:
+      - name: DeviceID
+        in: query
+        description: Device ID to check registration status for
+        required: true
+        schema:
+          type: string
+        example: f7306888-94c9-478b-a076-bba9378563a9
+      responses:
+        '200':
+          description: Registration status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationResponse'
+        '400':
+          description: Bad request - invalid device ID
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RegistrationCheckResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RegistrationCheckResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RegistrationCheckResponse'
+        '404':
+          description: Not found - device not registered
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RegistrationCheckResponse'
+        '500':
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RegistrationCheckResponse'
+      security:
+      - BearerAuth: []
+    put:
+      tags:
+      - Registration
+      summary: Update ETX client registration
+      description: Updates an existing ETX client registration. This endpoint supports retry logic for handling pending registration updates. The client must provide a valid device ID for successful registration update.
+      operationId: putRegistration
+      parameters:
+      - name: retry
+        in: query
+        description: Enable retry logic for pending registration updates
+        required: false
+        schema:
+          type: boolean
+          default: true
+        example: true
+      - name: num_retries
+        in: query
+        description: Number of retry attempts for pending updates
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 5
+        example: 5
+      - name: num_sec_to_sleep
+        in: query
+        description: Seconds to sleep between retry attempts
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 15
+        example: 15
+      requestBody:
+        description: Client registration update information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationPutRequest'
+        required: true
+      responses:
+        '200':
+          description: Registration update successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationResponse'
+        '400':
+          description: Bad request - invalid update data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            application/json: {}
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            application/json: {}
+        '404':
+          description: Not found - device not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+    post:
+      tags:
+      - Registration
+      summary: Register ETX client
+      description: Registers a new ETX client with the system. This endpoint supports retry logic for handling pending registrations. The client must provide valid client type and subtype information for successful registration.
+      operationId: postRegistration
+      parameters:
+      - name: retry
+        in: query
+        description: Enable retry logic for pending registrations
+        required: false
+        schema:
+          type: boolean
+          default: true
+        example: true
+      - name: num_retries
+        in: query
+        description: Number of retry attempts for pending registrations
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 5
+        example: 5
+      - name: num_sec_to_sleep
+        in: query
+        description: Seconds to sleep between retry attempts
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 15
+        example: 15
+      requestBody:
+        description: Client registration information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationPostRequest'
+        required: true
+      responses:
+        '200':
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationResponse'
+        '400':
+          description: Bad request - invalid registration data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            application/json: {}
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            application/json: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/registration-connection:
+    post:
+      tags:
+      - Registration
+      summary: Register and connect ETX client
+      description: Performs both client registration and connection establishment in a single operation. This endpoint first registers the client with the system, then establishes a connection using the returned device ID. This is a convenience endpoint that combines the functionality of both registration and connection endpoints.
+      operationId: postRegistrationConnection
+      parameters:
+      - name: num_retries
+        in: query
+        description: Number of retry attempts for pending registrations
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 5
+        example: 5
+      - name: num_sec_to_sleep
+        in: query
+        description: Seconds to sleep between retry attempts
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 15
+        example: 15
+      requestBody:
+        description: Combined registration and connection information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationConnectionPostRequest'
+        required: true
+      responses:
+        '200':
+          description: Registration and connection successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompleteResponse'
+        '400':
+          description: Bad request - invalid registration or connection data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            application/json: {}
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            application/json: {}
+        '500':
+          description: Internal server error - registration or connection failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      deprecated: true
+      security:
+      - BearerAuth: []
+  /prd/v2/connection:
+    post:
+      tags:
+      - Registration
+      summary: Establish ETX client connection
+      description: Establishes a connection for an ETX client with location and network information. This endpoint is used to register device location and network connectivity for V2X communication.
+      operationId: postConnection
+      requestBody:
+        description: Client connection information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectionPostRequest'
+        required: true
+      responses:
+        '200':
+          description: Connection established successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectionResponse'
+        '400':
+          description: Bad request - invalid connection data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            application/json: {}
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            application/json: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/registration/cleanup/vendor/{vendorId}:
+    get:
+      tags:
+      - Registration
+      summary: Clean up old registrations for vendor
+      description: Cleans up old registrations for a specific vendor (Admin only)
+      operationId: cleanupVendorRegistrations
+      parameters:
+      - name: vendorId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Registrations cleanup completed successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+        '500':
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    RegistrationCheckResponse:
+      type: object
+      properties:
+        DeviceID:
+          type: string
+        Certificate:
+          $ref: '#/components/schemas/Certificate'
+        ClientSubtype:
+          type: string
+          enum:
+          - PassengerCar
+          - Truck
+          - Bus
+          - EmergencyVehicle
+          - SchoolBus
+          - MaintenanceVehicle
+          - Pedestrian
+          - Bicycle
+          - Scooter
+          - Motorcycle
+          - RoadSideUnit
+          - Camera
+          - Lidar
+          - Radar
+          - InductiveLoop
+          - MagneticSensor
+          - Platform
+          - Application
+          - NA
+        ClientType:
+          type: string
+          enum:
+          - Vehicle
+          - VulnerableRoadUser
+          - TrafficLightController
+          - InfrastructureSensor
+          - OnboardSensor
+          - Software
+        VendorID:
+          type: string
+    ConnectionPostRequest:
+      type: object
+      properties:
+        DeviceID:
+          type: string
+          description: Unique identifier for the device
+        lat:
+          type: number
+          format: double
+          description: Latitude coordinate of the device location
+        long:
+          type: number
+          format: double
+          description: Longitude coordinate of the device location
+        NetworkType:
+          type: string
+          description: Type of network connection
+          enum:
+          - non-VZ
+          - VZ
+      required:
+      - DeviceID
+      - NetworkType
+      - lat
+      - long
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        description:
+          type: string
+    Certificate:
+      type: object
+      properties:
+        ExpirationTime:
+          type: string
+        cert.pem:
+          type: string
+        key.pem:
+          type: string
+        ca.pem:
+          type: string
+    RegistrationPostRequest:
+      type: object
+      description: Request model for ETX registration
+      properties:
+        ClientType:
+          type: string
+          description: Type of client for registration
+          enum:
+          - Vehicle
+          - VulnerableRoadUser
+          - TrafficLightController
+          - InfrastructureSensor
+          - OnboardSensor
+          - Software
+        ClientSubtype:
+          type: string
+          description: Subtype of client for registration
+          enum:
+          - PassengerCar
+          - Truck
+          - Bus
+          - EmergencyVehicle
+          - SchoolBus
+          - MaintenanceVehicle
+          - Pedestrian
+          - Bicycle
+          - Scooter
+          - Motorcycle
+          - RoadSideUnit
+          - Camera
+          - Lidar
+          - Radar
+          - InductiveLoop
+          - MagneticSensor
+          - Platform
+          - Application
+          - NA
+      required:
+      - ClientSubtype
+      - ClientType
+    CompleteResponse:
+      type: object
+      properties:
+        registration:
+          $ref: '#/components/schemas/RegistrationResponse'
+        connection:
+          $ref: '#/components/schemas/ConnectionResponse'
+    RegistrationConnectionPostRequest:
+      type: object
+      properties:
+        ClientType:
+          type: string
+          description: Type of client for registration
+          enum:
+          - Vehicle
+          - VulnerableRoadUser
+          - TrafficLightController
+          - InfrastructureSensor
+          - OnboardSensor
+          - Software
+        ClientSubtype:
+          type: string
+          description: Subtype of client for registration
+          enum:
+          - PassengerCar
+          - Truck
+          - Bus
+          - EmergencyVehicle
+          - SchoolBus
+          - MaintenanceVehicle
+          - Pedestrian
+          - Bicycle
+          - Scooter
+          - Motorcycle
+          - RoadSideUnit
+          - Camera
+          - Lidar
+          - Radar
+          - InductiveLoop
+          - MagneticSensor
+          - Platform
+          - Application
+          - NA
+        lat:
+          type: number
+          format: double
+          description: Latitude coordinate of the device location
+        long:
+          type: number
+          format: double
+          description: Longitude coordinate of the device location
+        NetworkType:
+          type: string
+          description: Type of network connection
+          enum:
+          - non-VZ
+          - VZ
+      required:
+      - ClientSubtype
+      - ClientType
+      - NetworkType
+      - lat
+      - long
+    RegistrationPutRequest:
+      type: object
+      properties:
+        DeviceID:
+          type: string
+          description: Unique identifier for the device to update registration
+      required:
+      - DeviceID
+    RegistrationResponse:
+      type: object
+      properties:
+        DeviceID:
+          type: string
+        Certificate:
+          $ref: '#/components/schemas/Certificate'
+    ConnectionResponse:
+      type: object
+      properties:
+        MqttURL:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      description: Keycloak JWT Bearer Token. Required for all endpoints except decode endpoints. Obtain a token from the /auth/token endpoint using your credentials.
+      scheme: bearer
+      bearerFormat: JWT

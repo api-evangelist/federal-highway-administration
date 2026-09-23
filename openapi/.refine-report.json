@@ -1,0 +1,41 @@
+{
+  "provider": "federal-highway-administration",
+  "sources": [
+    "_original/federal-highway-administration-v2x-app-api-openapi.json"
+  ],
+  "outputs": [
+    "federal-highway-administration-authentication-api-openapi.yml",
+    "federal-highway-administration-deposit-api-openapi.yml",
+    "federal-highway-administration-geofence-deployments-api-openapi.yml",
+    "federal-highway-administration-geofence-expiration-api-openapi.yml",
+    "federal-highway-administration-path-management-api-openapi.yml",
+    "federal-highway-administration-registration-api-openapi.yml",
+    "federal-highway-administration-secret-management-api-openapi.yml",
+    "federal-highway-administration-tim-configuration-api-openapi.yml",
+    "federal-highway-administration-user-limits-management-api-openapi.yml",
+    "federal-highway-administration-vendor-limits-management-api-openapi.yml",
+    "federal-highway-administration-configuration-rest-controller-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "federal-highway-administration-v2x-app-api-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "federal-highway-administration-v2x-app-api-openapi.json: declared missing tag: configuration-rest-controller",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "federal-highway-administration-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "federal-highway-administration-configuration-rest-controller-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "federal-highway-administration-deposit-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "federal-highway-administration-geofence-deployments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "federal-highway-administration-geofence-expiration-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "federal-highway-administration-path-management-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "federal-highway-administration-registration-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "federal-highway-administration-secret-management-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "federal-highway-administration-tim-configuration-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "federal-highway-administration-user-limits-management-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "federal-highway-administration-vendor-limits-management-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

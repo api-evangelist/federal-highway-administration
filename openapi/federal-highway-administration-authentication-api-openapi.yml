@@ -1,0 +1,116 @@
+openapi: 3.2.0
+info:
+  title: V2X App Authentication API
+  description: API for Vehicle-to-Everything (V2X) Multi-Access Edge Computing (MEC) services. This App API provides endpoints for ETX registration, V2X Message Deposit, and authentication services.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+security:
+- BearerAuth: []
+tags:
+- name: Authentication
+  description: Authentication and authorization for Registration and Deposit endpoints
+paths:
+  /auth/token:
+    post:
+      tags:
+      - Authentication
+      summary: Generate authentication token
+      description: 'Authenticates a user with Keycloak and returns an access token. This endpoint is used for user authentication and obtaining JWT tokens for subsequent API calls. **Note: This endpoint does not require authentication.**'
+      operationId: postRegistration_1
+      requestBody:
+        description: User credentials for authentication
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenPostRequest'
+        required: true
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPostResponse'
+        '401':
+          description: Authentication failed - invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeycloakErrorResponse'
+        '400':
+          description: Bad request - missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeycloakErrorResponse'
+components:
+  schemas:
+    KeycloakErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+        status:
+          type: integer
+          format: int32
+        error:
+          type: string
+        path:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        description:
+          type: string
+    TokenPostResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        expires_in:
+          type: integer
+          format: int32
+        refresh_expires_in:
+          type: integer
+          format: int32
+        refresh_token:
+          type: string
+        token_type:
+          type: string
+        id_token:
+          type: string
+        not-before-policy:
+          type: string
+        session_state:
+          type: string
+        scope:
+          type: string
+    TokenPostRequest:
+      type: object
+      description: Request model for authentication token
+      properties:
+        username:
+          type: string
+          description: Username for authentication
+        password:
+          type: string
+          description: Password for authentication
+      required:
+      - password
+      - username
+  securitySchemes:
+    BearerAuth:
+      type: http
+      description: Keycloak JWT Bearer Token. Required for all endpoints except decode endpoints. Obtain a token from the /auth/token endpoint using your credentials.
+      scheme: bearer
+      bearerFormat: JWT

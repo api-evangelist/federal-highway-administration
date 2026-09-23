@@ -1,0 +1,310 @@
+openapi: 3.2.0
+info:
+  title: V2X App User Limits Management API
+  description: API for Vehicle-to-Everything (V2X) Multi-Access Edge Computing (MEC) services. This App API provides endpoints for ETX registration, V2X Message Deposit, and authentication services.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+security:
+- BearerAuth: []
+tags:
+- name: User Limits Management
+  description: Endpoints for managing user registration limits
+paths:
+  /prd/v2/admin/user-limits:
+    get:
+      tags:
+      - User Limits Management
+      summary: Get all user limits
+      description: Retrieves all user limits (Admin only)
+      operationId: getAllUserLimits
+      responses:
+        '200':
+          description: User limits retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+        '500':
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+      security:
+      - BearerAuth: []
+    post:
+      tags:
+      - User Limits Management
+      summary: Create or update user limits
+      description: Creates new user limits or updates existing ones. Sets personal registration limits for a specific user (Admin only)
+      operationId: createOrUpdateUserLimits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLimitsRequest'
+        required: true
+      responses:
+        '200':
+          description: User limits created/updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLimitsResponse'
+        '400':
+          description: Bad request - invalid data
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserLimitsResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserLimitsResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserLimitsResponse'
+        '500':
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserLimitsResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/admin/user-limits/vendor/{vendorId}:
+    get:
+      tags:
+      - User Limits Management
+      summary: Get user limits by vendor ID
+      description: Retrieves user limits for a specific vendor (Admin only)
+      operationId: getUserLimitsByVendorId
+      parameters:
+      - name: vendorId
+        in: path
+        description: Vendor ID to get limits for
+        required: true
+        schema:
+          type: string
+        example: NeaeraEval02
+      responses:
+        '200':
+          description: User limits retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+        '500':
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/admin/user-limits/user/{username}:
+    get:
+      tags:
+      - User Limits Management
+      summary: Get user limits by username
+      description: Retrieves user limits for a specific username (Admin only)
+      operationId: getUserLimitsByUsername
+      parameters:
+      - name: username
+        in: path
+        description: Username to get limits for
+        required: true
+        schema:
+          type: string
+        example: john.doe
+      responses:
+        '200':
+          description: User limits retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+        '401':
+          description: Unauthorized - invalid or missing authentication
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+        '500':
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserLimitsResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/admin/user-limits/user/{username}/vendor/{vendorId}:
+    delete:
+      tags:
+      - User Limits Management
+      summary: Delete user limits
+      description: Deletes user limits for a specific user and vendor (Admin only)
+      operationId: deleteUserLimits
+      parameters:
+      - name: username
+        in: path
+        description: Username to delete limits for
+        required: true
+        schema:
+          type: string
+        example: john.doe
+      - name: vendorId
+        in: path
+        description: Vendor ID to delete limits for
+        required: true
+        schema:
+          type: string
+        example: NeaeraEval02
+      responses:
+        '200':
+          description: User limits deleted successfully
+        '401':
+          description: Unauthorized - invalid or missing authentication
+        '403':
+          description: Forbidden - insufficient permissions
+        '404':
+          description: User limits not found
+        '500':
+          description: Internal server error
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    UserLimitsRequest:
+      type: object
+      description: User limits information
+      properties:
+        username:
+          type: string
+          description: Username to set limits for
+          example: john.doe
+          minLength: 1
+        vendorId:
+          type: string
+          description: Vendor ID for the limits
+          example: EtxVendor
+          minLength: 1
+        maxRegistrations:
+          type: integer
+          format: int32
+          description: Maximum number of registrations this specific user can have (personal limit)
+          example: 10
+          minimum: 1
+      required:
+      - maxRegistrations
+      - username
+      - vendorId
+    UserLimitsResponse:
+      type: object
+      description: User limits response
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier
+          example: 1
+        username:
+          type: string
+          description: Username
+          example: john.doe
+        vendorId:
+          type: string
+          description: Vendor ID
+          example: NeaeraEval02
+        maxRegistrations:
+          type: integer
+          format: int32
+          description: Maximum registrations this specific user can have (personal limit)
+          example: 10
+        isActive:
+          type: boolean
+          description: Whether the limits are active
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        createdBy:
+          type: string
+          description: User who created the limits
+          example: admin
+        updatedBy:
+          type: string
+          description: User who last updated the limits
+          example: admin
+  securitySchemes:
+    BearerAuth:
+      type: http
+      description: Keycloak JWT Bearer Token. Required for all endpoints except decode endpoints. Obtain a token from the /auth/token endpoint using your credentials.
+      scheme: bearer
+      bearerFormat: JWT

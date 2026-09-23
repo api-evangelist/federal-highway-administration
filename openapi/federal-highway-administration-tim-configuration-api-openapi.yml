@@ -1,0 +1,131 @@
+openapi: 3.2.0
+info:
+  title: V2X App TIM Configuration API
+  description: API for Vehicle-to-Everything (V2X) Multi-Access Edge Computing (MEC) services. This App API provides endpoints for ETX registration, V2X Message Deposit, and authentication services.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+security:
+- BearerAuth: []
+tags:
+- name: TIM Configuration
+  description: TIM ITIS phrases and metadata configuration endpoints
+paths:
+  /prd/v2/tim/icons/{version}:
+    get:
+      tags:
+      - TIM Configuration
+      summary: Download TIM icons TAR.GZ
+      description: Downloads a TAR.GZ file containing all TIM icons for the specified version. This endpoint returns all available icons for the given version in a compressed tar.gz archive.
+      operationId: downloadTimIcons
+      parameters:
+      - name: version
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: TIM icons TAR.GZ file downloaded successfully
+          content:
+            application/gzip:
+              schema:
+                type: string
+                format: byte
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+  /prd/v2/tim/configuration:
+    get:
+      tags:
+      - TIM Configuration
+      summary: Get TIM configuration
+      description: Retrieves the TIM ITIS phrases and metadata configuration. This endpoint returns the configuration JSON containing TIM phrases, their codes, graphics, and overlay information along with a version number that correlates to a downloadable ZIP file of icons.
+      operationId: getTimConfiguration
+      responses:
+        '200':
+          description: TIM configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimConfigurationResponse'
+        '404':
+          description: TIM configuration file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        description:
+          type: string
+    TimOverlay:
+      type: object
+      properties:
+        majorFontSize:
+          type: integer
+          format: int32
+        minorFontSize:
+          type: integer
+          format: int32
+        xPos:
+          type: integer
+          format: int32
+        yPos:
+          type: integer
+          format: int32
+        align:
+          type: string
+    TimConfigurationResponse:
+      type: object
+      properties:
+        version:
+          type: string
+        tims:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimPhrase'
+    TimPhrase:
+      type: object
+      properties:
+        name:
+          type: string
+        source:
+          type: string
+        type:
+          type: string
+        codes:
+          type: array
+          items:
+            type: string
+        graphic:
+          type: string
+        overlays:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimOverlay'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      description: Keycloak JWT Bearer Token. Required for all endpoints except decode endpoints. Obtain a token from the /auth/token endpoint using your credentials.
+      scheme: bearer
+      bearerFormat: JWT
