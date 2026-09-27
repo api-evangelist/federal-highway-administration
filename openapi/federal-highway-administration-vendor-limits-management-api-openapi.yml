@@ -176,24 +176,6 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    VendorLimitsRequest:
-      type: object
-      description: Vendor limits information
-      properties:
-        vendorId:
-          type: string
-          description: Vendor ID for the limits
-          example: EtxVendor
-          minLength: 1
-        maxRegistrations:
-          type: integer
-          format: int32
-          description: Maximum number of total registrations this vendor can have across all users
-          example: 100
-          minimum: 1
-      required:
-      - maxRegistrations
-      - vendorId
     VendorLimitsResponse:
       type: object
       description: Vendor limits response
@@ -232,6 +214,24 @@ components:
           type: string
           description: User who last updated the limits
           example: admin
+    VendorLimitsRequest:
+      type: object
+      description: Vendor limits information
+      properties:
+        vendorId:
+          type: string
+          description: Vendor ID for the limits
+          example: EtxVendor
+          minLength: 1
+        maxRegistrations:
+          type: integer
+          format: int32
+          description: Maximum number of total registrations this vendor can have across all users
+          example: 100
+          minimum: 1
+      required:
+      - maxRegistrations
+      - vendorId
   securitySchemes:
     BearerAuth:
       type: http

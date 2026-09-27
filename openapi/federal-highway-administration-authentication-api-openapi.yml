@@ -53,25 +53,6 @@ paths:
                 $ref: '#/components/schemas/KeycloakErrorResponse'
 components:
   schemas:
-    KeycloakErrorResponse:
-      type: object
-      properties:
-        timestamp:
-          type: integer
-        status:
-          type: integer
-          format: int32
-        error:
-          type: string
-        path:
-          type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        description:
-          type: string
     TokenPostResponse:
       type: object
       properties:
@@ -108,6 +89,25 @@ components:
       required:
       - password
       - username
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        description:
+          type: string
+    KeycloakErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+        status:
+          type: integer
+          format: int32
+        error:
+          type: string
+        path:
+          type: string
   securitySchemes:
     BearerAuth:
       type: http

@@ -8,15 +8,20 @@ description: >-
   innovation.
 type: Index
 deliveryModel:
-  model: unknown
-  open_source: false
-  commercial: false
+  model: saas
+  license_evidence:
+    not_product:
+    - usdot-fhwa-stol/v2x-app-api
+  open_source: unknown
+  commercial: true
   callable_host: false
-  label: Delivery model not determined — needs a product licence on record
+  label: Hosted service · you call their endpoint
   confidence: low
   source:
-  - none
-  generated: '2026-08-28'
+  - openapi
+  - pricing
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium
@@ -36,13 +41,13 @@ created: '2024-12-03'
 modified: '2026-09-09'
 position: Consuming
 tags:
-  - Federal-Government
+  - Federal Government
   - Transportation
   - Highways
   - Bridge
   - Connected Vehicles
   - V2X
-  - Open-Source
+  - Open Source
   - Open Data
 tags_raw:
   - Federal Government
@@ -53,6 +58,8 @@ tags_raw:
   - V2X
   - Open Source
   - Open Data
+  - Federal-Government
+  - Open-Source
 url: >-
   https://raw.githubusercontent.com/api-evangelist/federal-highway-administration/refs/heads/main/apis.yml
 specificationVersion: '0.23'

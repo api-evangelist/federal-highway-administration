@@ -140,13 +140,6 @@ components:
                   items:
                     type: number
                     format: double
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        description:
-          type: string
     Polygon:
       allOf:
       - $ref: '#/components/schemas/Geometry'
@@ -161,6 +154,80 @@ components:
                 items:
                   type: number
                   format: double
+    LineString:
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: number
+                format: double
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        description:
+          type: string
+    DepositRequest:
+      type: object
+      description: Request model for V2X message deposit
+      properties:
+        asn1_hex:
+          type: string
+          description: UPER-encoded MessageFrame containing a MAP or TIM V2X Message in hexadecimal format
+        override_geofence:
+          $ref: '#/components/schemas/GeofenceFeatureCollection'
+          description: Override Geofence for ETX deployment. If not set, the geofence will be extracted from the provided message
+      required:
+      - asn1_hex
+    Geometry:
+      discriminator:
+        propertyName: type
+      properties:
+        type:
+          type: string
+      required:
+      - type
+    MultiLineString:
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: array
+                items:
+                  type: number
+                  format: double
+    GeofenceFeature:
+      type: object
+      description: GeoJSON Feature representing a single geometric element within a geofence
+      properties:
+        type:
+          type: string
+          description: GeoJSON type, must be 'Feature'
+          example: Feature
+        geometry:
+          description: GeoJSON geometry object defining the spatial extent
+          oneOf:
+          - $ref: '#/components/schemas/LineString'
+          - $ref: '#/components/schemas/MultiLineString'
+          - $ref: '#/components/schemas/MultiPolygon'
+          - $ref: '#/components/schemas/Polygon'
+        properties:
+          additionalProperties: false
+          description: 'Properties object is required and must be an empty object. No content is allowed in the properties object. Must be an empty JSON object: {}. Any properties within this object will cause validation to fail. This field enforces that the properties object contains no key-value pairs.'
+          example: {}
+      required:
+      - properties
     GeofenceDeploymentResponse:
       type: object
       description: Response model for Geofence deployment
@@ -201,41 +268,6 @@ components:
           description: List of geohashes covering the deployment area
           items:
             type: string
-    MultiLineString:
-      allOf:
-      - $ref: '#/components/schemas/Geometry'
-      - type: object
-        properties:
-          coordinates:
-            type: array
-            items:
-              type: array
-              items:
-                type: array
-                items:
-                  type: number
-                  format: double
-    GeofenceFeature:
-      type: object
-      description: GeoJSON Feature representing a single geometric element within a geofence
-      properties:
-        type:
-          type: string
-          description: GeoJSON type, must be 'Feature'
-          example: Feature
-        geometry:
-          description: GeoJSON geometry object defining the spatial extent
-          oneOf:
-          - $ref: '#/components/schemas/LineString'
-          - $ref: '#/components/schemas/MultiLineString'
-          - $ref: '#/components/schemas/MultiPolygon'
-          - $ref: '#/components/schemas/Polygon'
-        properties:
-          additionalProperties: false
-          description: 'Properties object is required and must be an empty object. No content is allowed in the properties object. Must be an empty JSON object: {}. Any properties within this object will cause validation to fail. This field enforces that the properties object contains no key-value pairs.'
-          example: {}
-      required:
-      - properties
     GeofenceFeatureCollection:
       type: object
       description: GeoJSON FeatureCollection representing a geofence area
@@ -249,38 +281,6 @@ components:
           description: Array of GeoJSON features defining the geofence geometry
           items:
             $ref: '#/components/schemas/GeofenceFeature'
-    LineString:
-      allOf:
-      - $ref: '#/components/schemas/Geometry'
-      - type: object
-        properties:
-          coordinates:
-            type: array
-            items:
-              type: array
-              items:
-                type: number
-                format: double
-    Geometry:
-      discriminator:
-        propertyName: type
-      properties:
-        type:
-          type: string
-      required:
-      - type
-    DepositRequest:
-      type: object
-      description: Request model for V2X message deposit
-      properties:
-        asn1_hex:
-          type: string
-          description: UPER-encoded MessageFrame containing a MAP or TIM V2X Message in hexadecimal format
-        override_geofence:
-          $ref: '#/components/schemas/GeofenceFeatureCollection'
-          description: Override Geofence for ETX deployment. If not set, the geofence will be extracted from the provided message
-      required:
-      - asn1_hex
   securitySchemes:
     BearerAuth:
       type: http

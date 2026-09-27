@@ -95,15 +95,6 @@ components:
           format: int32
         align:
           type: string
-    TimConfigurationResponse:
-      type: object
-      properties:
-        version:
-          type: string
-        tims:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimPhrase'
     TimPhrase:
       type: object
       properties:
@@ -123,6 +114,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TimOverlay'
+    TimConfigurationResponse:
+      type: object
+      properties:
+        version:
+          type: string
+        tims:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimPhrase'
   securitySchemes:
     BearerAuth:
       type: http

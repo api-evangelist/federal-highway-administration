@@ -366,136 +366,6 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    RegistrationCheckResponse:
-      type: object
-      properties:
-        DeviceID:
-          type: string
-        Certificate:
-          $ref: '#/components/schemas/Certificate'
-        ClientSubtype:
-          type: string
-          enum:
-          - PassengerCar
-          - Truck
-          - Bus
-          - EmergencyVehicle
-          - SchoolBus
-          - MaintenanceVehicle
-          - Pedestrian
-          - Bicycle
-          - Scooter
-          - Motorcycle
-          - RoadSideUnit
-          - Camera
-          - Lidar
-          - Radar
-          - InductiveLoop
-          - MagneticSensor
-          - Platform
-          - Application
-          - NA
-        ClientType:
-          type: string
-          enum:
-          - Vehicle
-          - VulnerableRoadUser
-          - TrafficLightController
-          - InfrastructureSensor
-          - OnboardSensor
-          - Software
-        VendorID:
-          type: string
-    ConnectionPostRequest:
-      type: object
-      properties:
-        DeviceID:
-          type: string
-          description: Unique identifier for the device
-        lat:
-          type: number
-          format: double
-          description: Latitude coordinate of the device location
-        long:
-          type: number
-          format: double
-          description: Longitude coordinate of the device location
-        NetworkType:
-          type: string
-          description: Type of network connection
-          enum:
-          - non-VZ
-          - VZ
-      required:
-      - DeviceID
-      - NetworkType
-      - lat
-      - long
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        description:
-          type: string
-    Certificate:
-      type: object
-      properties:
-        ExpirationTime:
-          type: string
-        cert.pem:
-          type: string
-        key.pem:
-          type: string
-        ca.pem:
-          type: string
-    RegistrationPostRequest:
-      type: object
-      description: Request model for ETX registration
-      properties:
-        ClientType:
-          type: string
-          description: Type of client for registration
-          enum:
-          - Vehicle
-          - VulnerableRoadUser
-          - TrafficLightController
-          - InfrastructureSensor
-          - OnboardSensor
-          - Software
-        ClientSubtype:
-          type: string
-          description: Subtype of client for registration
-          enum:
-          - PassengerCar
-          - Truck
-          - Bus
-          - EmergencyVehicle
-          - SchoolBus
-          - MaintenanceVehicle
-          - Pedestrian
-          - Bicycle
-          - Scooter
-          - Motorcycle
-          - RoadSideUnit
-          - Camera
-          - Lidar
-          - Radar
-          - InductiveLoop
-          - MagneticSensor
-          - Platform
-          - Application
-          - NA
-      required:
-      - ClientSubtype
-      - ClientType
-    CompleteResponse:
-      type: object
-      properties:
-        registration:
-          $ref: '#/components/schemas/RegistrationResponse'
-        connection:
-          $ref: '#/components/schemas/ConnectionResponse'
     RegistrationConnectionPostRequest:
       type: object
       properties:
@@ -552,6 +422,111 @@ components:
       - NetworkType
       - lat
       - long
+    RegistrationPostRequest:
+      type: object
+      description: Request model for ETX registration
+      properties:
+        ClientType:
+          type: string
+          description: Type of client for registration
+          enum:
+          - Vehicle
+          - VulnerableRoadUser
+          - TrafficLightController
+          - InfrastructureSensor
+          - OnboardSensor
+          - Software
+        ClientSubtype:
+          type: string
+          description: Subtype of client for registration
+          enum:
+          - PassengerCar
+          - Truck
+          - Bus
+          - EmergencyVehicle
+          - SchoolBus
+          - MaintenanceVehicle
+          - Pedestrian
+          - Bicycle
+          - Scooter
+          - Motorcycle
+          - RoadSideUnit
+          - Camera
+          - Lidar
+          - Radar
+          - InductiveLoop
+          - MagneticSensor
+          - Platform
+          - Application
+          - NA
+      required:
+      - ClientSubtype
+      - ClientType
+    CompleteResponse:
+      type: object
+      properties:
+        registration:
+          $ref: '#/components/schemas/RegistrationResponse'
+        connection:
+          $ref: '#/components/schemas/ConnectionResponse'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        description:
+          type: string
+    Certificate:
+      type: object
+      properties:
+        ExpirationTime:
+          type: string
+        cert.pem:
+          type: string
+        key.pem:
+          type: string
+        ca.pem:
+          type: string
+    RegistrationCheckResponse:
+      type: object
+      properties:
+        DeviceID:
+          type: string
+        Certificate:
+          $ref: '#/components/schemas/Certificate'
+        ClientSubtype:
+          type: string
+          enum:
+          - PassengerCar
+          - Truck
+          - Bus
+          - EmergencyVehicle
+          - SchoolBus
+          - MaintenanceVehicle
+          - Pedestrian
+          - Bicycle
+          - Scooter
+          - Motorcycle
+          - RoadSideUnit
+          - Camera
+          - Lidar
+          - Radar
+          - InductiveLoop
+          - MagneticSensor
+          - Platform
+          - Application
+          - NA
+        ClientType:
+          type: string
+          enum:
+          - Vehicle
+          - VulnerableRoadUser
+          - TrafficLightController
+          - InfrastructureSensor
+          - OnboardSensor
+          - Software
+        VendorID:
+          type: string
     RegistrationPutRequest:
       type: object
       properties:
@@ -560,6 +535,31 @@ components:
           description: Unique identifier for the device to update registration
       required:
       - DeviceID
+    ConnectionPostRequest:
+      type: object
+      properties:
+        DeviceID:
+          type: string
+          description: Unique identifier for the device
+        lat:
+          type: number
+          format: double
+          description: Latitude coordinate of the device location
+        long:
+          type: number
+          format: double
+          description: Longitude coordinate of the device location
+        NetworkType:
+          type: string
+          description: Type of network connection
+          enum:
+          - non-VZ
+          - VZ
+      required:
+      - DeviceID
+      - NetworkType
+      - lat
+      - long
     RegistrationResponse:
       type: object
       properties:
