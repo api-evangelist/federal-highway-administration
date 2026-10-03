@@ -140,6 +140,44 @@ paths:
       - BearerAuth: []
 components:
   schemas:
+    PathGeometry:
+      type: object
+      description: Path geometry
+      properties:
+        type:
+          type: string
+          description: Geometry type
+          example: LineString
+        coordinates:
+          type: array
+          description: Coordinate array
+          example:
+          - - -105.01621
+            - 39.57422
+          - - -105.01623
+            - 39.57424
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+    PathsResponse:
+      type: object
+      description: Response containing multiple paths in GeoJSON-like format
+      properties:
+        paths:
+          type: array
+          description: List of paths
+          items:
+            $ref: '#/components/schemas/PathResponse'
+    PathProperties:
+      type: object
+      description: Path properties
+      properties:
+        name:
+          type: string
+          description: Path name
+          example: Sample path
     PathResponse:
       type: object
       description: Path response containing GeoJSON-like structure
@@ -194,43 +232,6 @@ components:
           type: string
           description: User who last updated the path
           example: admin
-    PathGeometry:
-      type: object
-      description: Path geometry
-      properties:
-        type:
-          type: string
-          description: Geometry type
-          example: LineString
-        coordinates:
-          type: array
-          description: Coordinate array
-          example:
-          - - -105.01621
-            - 39.57422
-          - - -105.01623
-            - 39.57424
-          items:
-            type: array
-            items:
-              type: number
-              format: double
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        description:
-          type: string
-    PathsResponse:
-      type: object
-      description: Response containing multiple paths in GeoJSON-like format
-      properties:
-        paths:
-          type: array
-          description: List of paths
-          items:
-            $ref: '#/components/schemas/PathResponse'
     PathRequest:
       type: object
       description: Path request for creating or updating paths
@@ -264,14 +265,13 @@ components:
             format: int64
       required:
       - name
-    PathProperties:
+    ErrorResponse:
       type: object
-      description: Path properties
       properties:
-        name:
+        error:
           type: string
-          description: Path name
-          example: Sample path
+        description:
+          type: string
   securitySchemes:
     BearerAuth:
       type: http

@@ -53,29 +53,6 @@ paths:
                 $ref: '#/components/schemas/KeycloakErrorResponse'
 components:
   schemas:
-    TokenPostResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-        expires_in:
-          type: integer
-          format: int32
-        refresh_expires_in:
-          type: integer
-          format: int32
-        refresh_token:
-          type: string
-        token_type:
-          type: string
-        id_token:
-          type: string
-        not-before-policy:
-          type: string
-        session_state:
-          type: string
-        scope:
-          type: string
     TokenPostRequest:
       type: object
       description: Request model for authentication token
@@ -107,6 +84,29 @@ components:
         error:
           type: string
         path:
+          type: string
+    TokenPostResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        expires_in:
+          type: integer
+          format: int32
+        refresh_expires_in:
+          type: integer
+          format: int32
+        refresh_token:
+          type: string
+        token_type:
+          type: string
+        id_token:
+          type: string
+        not-before-policy:
+          type: string
+        session_state:
+          type: string
+        scope:
           type: string
   securitySchemes:
     BearerAuth:

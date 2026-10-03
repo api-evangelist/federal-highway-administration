@@ -71,29 +71,21 @@ paths:
       - BearerAuth: []
 components:
   schemas:
+    TimConfigurationResponse:
+      type: object
+      properties:
+        version:
+          type: string
+        tims:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimPhrase'
     ErrorResponse:
       type: object
       properties:
         error:
           type: string
         description:
-          type: string
-    TimOverlay:
-      type: object
-      properties:
-        majorFontSize:
-          type: integer
-          format: int32
-        minorFontSize:
-          type: integer
-          format: int32
-        xPos:
-          type: integer
-          format: int32
-        yPos:
-          type: integer
-          format: int32
-        align:
           type: string
     TimPhrase:
       type: object
@@ -114,15 +106,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TimOverlay'
-    TimConfigurationResponse:
+    TimOverlay:
       type: object
       properties:
-        version:
+        majorFontSize:
+          type: integer
+          format: int32
+        minorFontSize:
+          type: integer
+          format: int32
+        xPos:
+          type: integer
+          format: int32
+        yPos:
+          type: integer
+          format: int32
+        align:
           type: string
-        tims:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimPhrase'
   securitySchemes:
     BearerAuth:
       type: http
