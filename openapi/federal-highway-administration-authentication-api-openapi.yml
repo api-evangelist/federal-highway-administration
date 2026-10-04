@@ -53,38 +53,6 @@ paths:
                 $ref: '#/components/schemas/KeycloakErrorResponse'
 components:
   schemas:
-    TokenPostRequest:
-      type: object
-      description: Request model for authentication token
-      properties:
-        username:
-          type: string
-          description: Username for authentication
-        password:
-          type: string
-          description: Password for authentication
-      required:
-      - password
-      - username
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        description:
-          type: string
-    KeycloakErrorResponse:
-      type: object
-      properties:
-        timestamp:
-          type: integer
-        status:
-          type: integer
-          format: int32
-        error:
-          type: string
-        path:
-          type: string
     TokenPostResponse:
       type: object
       properties:
@@ -107,6 +75,38 @@ components:
         session_state:
           type: string
         scope:
+          type: string
+    TokenPostRequest:
+      type: object
+      description: Request model for authentication token
+      properties:
+        username:
+          type: string
+          description: Username for authentication
+        password:
+          type: string
+          description: Password for authentication
+      required:
+      - password
+      - username
+    KeycloakErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+        status:
+          type: integer
+          format: int32
+        error:
+          type: string
+        path:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        description:
           type: string
   securitySchemes:
     BearerAuth:

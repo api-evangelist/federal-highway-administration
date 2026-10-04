@@ -124,19 +124,32 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    GeofenceFeatureCollection:
+    MultiLineString:
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: array
+                items:
+                  type: number
+                  format: double
+    DepositRequest:
       type: object
-      description: GeoJSON FeatureCollection representing a geofence area
+      description: Request model for V2X message deposit
       properties:
-        type:
+        asn1_hex:
           type: string
-          description: GeoJSON type, must be 'FeatureCollection'
-          example: FeatureCollection
-        features:
-          type: array
-          description: Array of GeoJSON features defining the geofence geometry
-          items:
-            $ref: '#/components/schemas/GeofenceFeature'
+          description: UPER-encoded MessageFrame containing a MAP or TIM V2X Message in hexadecimal format
+        override_geofence:
+          $ref: '#/components/schemas/GeofenceFeatureCollection'
+          description: Override Geofence for ETX deployment. If not set, the geofence will be extracted from the provided message
+      required:
+      - asn1_hex
     GeofenceFeature:
       type: object
       description: GeoJSON Feature representing a single geometric element within a geofence
@@ -158,14 +171,6 @@ components:
           example: {}
       required:
       - properties
-    Geometry:
-      discriminator:
-        propertyName: type
-      properties:
-        type:
-          type: string
-      required:
-      - type
     GeofenceDeploymentResponse:
       type: object
       description: Response model for Geofence deployment
@@ -206,7 +211,7 @@ components:
           description: List of geohashes covering the deployment area
           items:
             type: string
-    MultiLineString:
+    Polygon:
       allOf:
       - $ref: '#/components/schemas/Geometry'
       - type: object
@@ -220,6 +225,19 @@ components:
                 items:
                   type: number
                   format: double
+    GeofenceFeatureCollection:
+      type: object
+      description: GeoJSON FeatureCollection representing a geofence area
+      properties:
+        type:
+          type: string
+          description: GeoJSON type, must be 'FeatureCollection'
+          example: FeatureCollection
+        features:
+          type: array
+          description: Array of GeoJSON features defining the geofence geometry
+          items:
+            $ref: '#/components/schemas/GeofenceFeature'
     MultiPolygon:
       allOf:
       - $ref: '#/components/schemas/Geometry'
@@ -236,6 +254,14 @@ components:
                   items:
                     type: number
                     format: double
+    Geometry:
+      discriminator:
+        propertyName: type
+      properties:
+        type:
+          type: string
+      required:
+      - type
     LineString:
       allOf:
       - $ref: '#/components/schemas/Geometry'
@@ -248,32 +274,6 @@ components:
               items:
                 type: number
                 format: double
-    DepositRequest:
-      type: object
-      description: Request model for V2X message deposit
-      properties:
-        asn1_hex:
-          type: string
-          description: UPER-encoded MessageFrame containing a MAP or TIM V2X Message in hexadecimal format
-        override_geofence:
-          $ref: '#/components/schemas/GeofenceFeatureCollection'
-          description: Override Geofence for ETX deployment. If not set, the geofence will be extracted from the provided message
-      required:
-      - asn1_hex
-    Polygon:
-      allOf:
-      - $ref: '#/components/schemas/Geometry'
-      - type: object
-        properties:
-          coordinates:
-            type: array
-            items:
-              type: array
-              items:
-                type: array
-                items:
-                  type: number
-                  format: double
     ErrorResponse:
       type: object
       properties:

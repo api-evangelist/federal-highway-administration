@@ -161,6 +161,47 @@ components:
             items:
               type: number
               format: double
+    PathRequest:
+      type: object
+      description: Path request for creating or updating paths
+      properties:
+        name:
+          type: string
+          description: Path name
+          example: Sample path
+          maxLength: 255
+          minLength: 0
+        type:
+          type: string
+          description: GeoJSON type
+          example: Feature
+        properties:
+          $ref: '#/components/schemas/PathProperties'
+          description: Path properties
+        geometry:
+          $ref: '#/components/schemas/PathGeometry'
+          description: Path geometry
+        timestamps:
+          type: array
+          description: Timestamps for each coordinate
+          example:
+          - 0
+          - 100
+          - 200
+          - 300
+          items:
+            type: integer
+            format: int64
+      required:
+      - name
+    PathProperties:
+      type: object
+      description: Path properties
+      properties:
+        name:
+          type: string
+          description: Path name
+          example: Sample path
     PathsResponse:
       type: object
       description: Response containing multiple paths in GeoJSON-like format
@@ -170,14 +211,6 @@ components:
           description: List of paths
           items:
             $ref: '#/components/schemas/PathResponse'
-    PathProperties:
-      type: object
-      description: Path properties
-      properties:
-        name:
-          type: string
-          description: Path name
-          example: Sample path
     PathResponse:
       type: object
       description: Path response containing GeoJSON-like structure
@@ -232,39 +265,6 @@ components:
           type: string
           description: User who last updated the path
           example: admin
-    PathRequest:
-      type: object
-      description: Path request for creating or updating paths
-      properties:
-        name:
-          type: string
-          description: Path name
-          example: Sample path
-          maxLength: 255
-          minLength: 0
-        type:
-          type: string
-          description: GeoJSON type
-          example: Feature
-        properties:
-          $ref: '#/components/schemas/PathProperties'
-          description: Path properties
-        geometry:
-          $ref: '#/components/schemas/PathGeometry'
-          description: Path geometry
-        timestamps:
-          type: array
-          description: Timestamps for each coordinate
-          example:
-          - 0
-          - 100
-          - 200
-          - 300
-          items:
-            type: integer
-            format: int64
-      required:
-      - name
     ErrorResponse:
       type: object
       properties:

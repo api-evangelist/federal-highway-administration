@@ -366,71 +366,6 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    RegistrationCheckResponse:
-      type: object
-      properties:
-        DeviceID:
-          type: string
-        Certificate:
-          $ref: '#/components/schemas/Certificate'
-        ClientSubtype:
-          type: string
-          enum:
-          - PassengerCar
-          - Truck
-          - Bus
-          - EmergencyVehicle
-          - SchoolBus
-          - MaintenanceVehicle
-          - Pedestrian
-          - Bicycle
-          - Scooter
-          - Motorcycle
-          - RoadSideUnit
-          - Camera
-          - Lidar
-          - Radar
-          - InductiveLoop
-          - MagneticSensor
-          - Platform
-          - Application
-          - NA
-        ClientType:
-          type: string
-          enum:
-          - Vehicle
-          - VulnerableRoadUser
-          - TrafficLightController
-          - InfrastructureSensor
-          - OnboardSensor
-          - Software
-        VendorID:
-          type: string
-    ConnectionPostRequest:
-      type: object
-      properties:
-        DeviceID:
-          type: string
-          description: Unique identifier for the device
-        lat:
-          type: number
-          format: double
-          description: Latitude coordinate of the device location
-        long:
-          type: number
-          format: double
-          description: Longitude coordinate of the device location
-        NetworkType:
-          type: string
-          description: Type of network connection
-          enum:
-          - non-VZ
-          - VZ
-      required:
-      - DeviceID
-      - NetworkType
-      - lat
-      - long
     Certificate:
       type: object
       properties:
@@ -442,11 +377,13 @@ components:
           type: string
         ca.pem:
           type: string
-    ConnectionResponse:
+    RegistrationResponse:
       type: object
       properties:
-        MqttURL:
+        DeviceID:
           type: string
+        Certificate:
+          $ref: '#/components/schemas/Certificate'
     RegistrationPutRequest:
       type: object
       properties:
@@ -495,20 +432,83 @@ components:
       required:
       - ClientSubtype
       - ClientType
-    RegistrationResponse:
+    ConnectionPostRequest:
+      type: object
+      properties:
+        DeviceID:
+          type: string
+          description: Unique identifier for the device
+        lat:
+          type: number
+          format: double
+          description: Latitude coordinate of the device location
+        long:
+          type: number
+          format: double
+          description: Longitude coordinate of the device location
+        NetworkType:
+          type: string
+          description: Type of network connection
+          enum:
+          - non-VZ
+          - VZ
+      required:
+      - DeviceID
+      - NetworkType
+      - lat
+      - long
+    ConnectionResponse:
+      type: object
+      properties:
+        MqttURL:
+          type: string
+    RegistrationCheckResponse:
       type: object
       properties:
         DeviceID:
           type: string
         Certificate:
           $ref: '#/components/schemas/Certificate'
-    ErrorResponse:
+        ClientSubtype:
+          type: string
+          enum:
+          - PassengerCar
+          - Truck
+          - Bus
+          - EmergencyVehicle
+          - SchoolBus
+          - MaintenanceVehicle
+          - Pedestrian
+          - Bicycle
+          - Scooter
+          - Motorcycle
+          - RoadSideUnit
+          - Camera
+          - Lidar
+          - Radar
+          - InductiveLoop
+          - MagneticSensor
+          - Platform
+          - Application
+          - NA
+        ClientType:
+          type: string
+          enum:
+          - Vehicle
+          - VulnerableRoadUser
+          - TrafficLightController
+          - InfrastructureSensor
+          - OnboardSensor
+          - Software
+        VendorID:
+          type: string
+    CompleteResponse:
       type: object
       properties:
-        error:
-          type: string
-        description:
-          type: string
+        registration:
+          $ref: '#/components/schemas/RegistrationResponse'
+        connection:
+          $ref: '#/components/schemas/ConnectionResponse'
     RegistrationConnectionPostRequest:
       type: object
       properties:
@@ -565,13 +565,13 @@ components:
       - NetworkType
       - lat
       - long
-    CompleteResponse:
+    ErrorResponse:
       type: object
       properties:
-        registration:
-          $ref: '#/components/schemas/RegistrationResponse'
-        connection:
-          $ref: '#/components/schemas/ConnectionResponse'
+        error:
+          type: string
+        description:
+          type: string
   securitySchemes:
     BearerAuth:
       type: http

@@ -290,19 +290,25 @@ components:
             type: string
           heading:
             $ref: '#/components/schemas/LimitItem'
-    GeofenceFeatureCollection:
+    MultiLineString:
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: array
+                items:
+                  type: number
+                  format: double
+    ConfigurationClearGeofence:
       type: object
-      description: GeoJSON FeatureCollection representing a geofence area
       properties:
-        type:
-          type: string
-          description: GeoJSON type, must be 'FeatureCollection'
-          example: FeatureCollection
-        features:
-          type: array
-          description: Array of GeoJSON features defining the geofence geometry
-          items:
-            $ref: '#/components/schemas/GeofenceFeature'
+        clear_tim_only:
+          type: boolean
     GeofenceFeature:
       type: object
       description: GeoJSON Feature representing a single geometric element within a geofence
@@ -324,15 +330,27 @@ components:
           example: {}
       required:
       - properties
-    Geometry:
-      discriminator:
-        propertyName: type
+    LimitSpeedItem:
+      allOf:
+      - $ref: '#/components/schemas/Limit'
+      - type: object
+        properties:
+          description:
+            type: string
+          speed:
+            $ref: '#/components/schemas/LimitItem'
+    ConfigurationGeofenceSummary:
+      type: object
       properties:
-        type:
+        id:
           type: string
-      required:
-      - type
-    MultiLineString:
+        name:
+          type: string
+        description:
+          type: string
+        isActive:
+          type: boolean
+    Polygon:
       allOf:
       - $ref: '#/components/schemas/Geometry'
       - type: object
@@ -346,11 +364,56 @@ components:
                 items:
                   type: number
                   format: double
-    ConfigurationClearGeofence:
+    GeofenceFeatureCollection:
+      type: object
+      description: GeoJSON FeatureCollection representing a geofence area
+      properties:
+        type:
+          type: string
+          description: GeoJSON type, must be 'FeatureCollection'
+          example: FeatureCollection
+        features:
+          type: array
+          description: Array of GeoJSON features defining the geofence geometry
+          items:
+            $ref: '#/components/schemas/GeofenceFeature'
+    Limit: {}
+    MultiPolygon:
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: number
+                    format: double
+    LimitItem:
       type: object
       properties:
-        clear_tim_only:
-          type: boolean
+        min:
+          type: number
+          format: double
+        max:
+          type: number
+          format: double
+    DistributionSchedule:
+      type: object
+      properties:
+        repeatPeriod:
+          type: integer
+          format: int32
+        duration:
+          type: integer
+          format: int32
+        startTime:
+          type: string
     ConfigurationGeofence:
       type: object
       properties:
@@ -371,120 +434,6 @@ components:
             $ref: '#/components/schemas/Message'
         isActive:
           type: boolean
-    LimitSpeedItem:
-      allOf:
-      - $ref: '#/components/schemas/Limit'
-      - type: object
-        properties:
-          description:
-            type: string
-          speed:
-            $ref: '#/components/schemas/LimitItem'
-    MultiPolygon:
-      allOf:
-      - $ref: '#/components/schemas/Geometry'
-      - type: object
-        properties:
-          coordinates:
-            type: array
-            items:
-              type: array
-              items:
-                type: array
-                items:
-                  type: array
-                  items:
-                    type: number
-                    format: double
-    ConfigurationGeofenceSummary:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        isActive:
-          type: boolean
-    ConfigurationGeofenceResponse:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        geoFence:
-          $ref: '#/components/schemas/GeofenceFeatureCollection'
-        messageStandard:
-          type: string
-          enum:
-          - etsi
-          - sae
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-        isActive:
-          type: boolean
-        id:
-          type: string
-        vendorId:
-          type: string
-    DistributionSchedule:
-      type: object
-      properties:
-        repeatPeriod:
-          type: integer
-          format: int32
-        duration:
-          type: integer
-          format: int32
-        startTime:
-          type: string
-    LineString:
-      allOf:
-      - $ref: '#/components/schemas/Geometry'
-      - type: object
-        properties:
-          coordinates:
-            type: array
-            items:
-              type: array
-              items:
-                type: number
-                format: double
-    Polygon:
-      allOf:
-      - $ref: '#/components/schemas/Geometry'
-      - type: object
-        properties:
-          coordinates:
-            type: array
-            items:
-              type: array
-              items:
-                type: array
-                items:
-                  type: number
-                  format: double
-    LimitItem:
-      type: object
-      properties:
-        min:
-          type: number
-          format: double
-        max:
-          type: number
-          format: double
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        description:
-          type: string
-    Limit: {}
     Message:
       type: object
       properties:
@@ -521,6 +470,57 @@ components:
           $ref: '#/components/schemas/DistributionSchedule'
         isPrivate:
           type: boolean
+    ConfigurationGeofenceResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        geoFence:
+          $ref: '#/components/schemas/GeofenceFeatureCollection'
+        messageStandard:
+          type: string
+          enum:
+          - etsi
+          - sae
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        isActive:
+          type: boolean
+        id:
+          type: string
+        vendorId:
+          type: string
+    Geometry:
+      discriminator:
+        propertyName: type
+      properties:
+        type:
+          type: string
+      required:
+      - type
+    LineString:
+      allOf:
+      - $ref: '#/components/schemas/Geometry'
+      - type: object
+        properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                type: number
+                format: double
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        description:
+          type: string
   securitySchemes:
     BearerAuth:
       type: http
