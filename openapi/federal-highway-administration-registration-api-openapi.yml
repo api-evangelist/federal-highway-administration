@@ -366,72 +366,6 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    Certificate:
-      type: object
-      properties:
-        ExpirationTime:
-          type: string
-        cert.pem:
-          type: string
-        key.pem:
-          type: string
-        ca.pem:
-          type: string
-    RegistrationResponse:
-      type: object
-      properties:
-        DeviceID:
-          type: string
-        Certificate:
-          $ref: '#/components/schemas/Certificate'
-    RegistrationPutRequest:
-      type: object
-      properties:
-        DeviceID:
-          type: string
-          description: Unique identifier for the device to update registration
-      required:
-      - DeviceID
-    RegistrationPostRequest:
-      type: object
-      description: Request model for ETX registration
-      properties:
-        ClientType:
-          type: string
-          description: Type of client for registration
-          enum:
-          - Vehicle
-          - VulnerableRoadUser
-          - TrafficLightController
-          - InfrastructureSensor
-          - OnboardSensor
-          - Software
-        ClientSubtype:
-          type: string
-          description: Subtype of client for registration
-          enum:
-          - PassengerCar
-          - Truck
-          - Bus
-          - EmergencyVehicle
-          - SchoolBus
-          - MaintenanceVehicle
-          - Pedestrian
-          - Bicycle
-          - Scooter
-          - Motorcycle
-          - RoadSideUnit
-          - Camera
-          - Lidar
-          - Radar
-          - InductiveLoop
-          - MagneticSensor
-          - Platform
-          - Application
-          - NA
-      required:
-      - ClientSubtype
-      - ClientType
     ConnectionPostRequest:
       type: object
       properties:
@@ -462,46 +396,6 @@ components:
       properties:
         MqttURL:
           type: string
-    RegistrationCheckResponse:
-      type: object
-      properties:
-        DeviceID:
-          type: string
-        Certificate:
-          $ref: '#/components/schemas/Certificate'
-        ClientSubtype:
-          type: string
-          enum:
-          - PassengerCar
-          - Truck
-          - Bus
-          - EmergencyVehicle
-          - SchoolBus
-          - MaintenanceVehicle
-          - Pedestrian
-          - Bicycle
-          - Scooter
-          - Motorcycle
-          - RoadSideUnit
-          - Camera
-          - Lidar
-          - Radar
-          - InductiveLoop
-          - MagneticSensor
-          - Platform
-          - Application
-          - NA
-        ClientType:
-          type: string
-          enum:
-          - Vehicle
-          - VulnerableRoadUser
-          - TrafficLightController
-          - InfrastructureSensor
-          - OnboardSensor
-          - Software
-        VendorID:
-          type: string
     CompleteResponse:
       type: object
       properties:
@@ -509,6 +403,14 @@ components:
           $ref: '#/components/schemas/RegistrationResponse'
         connection:
           $ref: '#/components/schemas/ConnectionResponse'
+    RegistrationPutRequest:
+      type: object
+      properties:
+        DeviceID:
+          type: string
+          description: Unique identifier for the device to update registration
+      required:
+      - DeviceID
     RegistrationConnectionPostRequest:
       type: object
       properties:
@@ -565,6 +467,97 @@ components:
       - NetworkType
       - lat
       - long
+    RegistrationCheckResponse:
+      type: object
+      properties:
+        DeviceID:
+          type: string
+        Certificate:
+          $ref: '#/components/schemas/Certificate'
+        ClientSubtype:
+          type: string
+          enum:
+          - PassengerCar
+          - Truck
+          - Bus
+          - EmergencyVehicle
+          - SchoolBus
+          - MaintenanceVehicle
+          - Pedestrian
+          - Bicycle
+          - Scooter
+          - Motorcycle
+          - RoadSideUnit
+          - Camera
+          - Lidar
+          - Radar
+          - InductiveLoop
+          - MagneticSensor
+          - Platform
+          - Application
+          - NA
+        ClientType:
+          type: string
+          enum:
+          - Vehicle
+          - VulnerableRoadUser
+          - TrafficLightController
+          - InfrastructureSensor
+          - OnboardSensor
+          - Software
+        VendorID:
+          type: string
+    Certificate:
+      type: object
+      properties:
+        ExpirationTime:
+          type: string
+        cert.pem:
+          type: string
+        key.pem:
+          type: string
+        ca.pem:
+          type: string
+    RegistrationPostRequest:
+      type: object
+      description: Request model for ETX registration
+      properties:
+        ClientType:
+          type: string
+          description: Type of client for registration
+          enum:
+          - Vehicle
+          - VulnerableRoadUser
+          - TrafficLightController
+          - InfrastructureSensor
+          - OnboardSensor
+          - Software
+        ClientSubtype:
+          type: string
+          description: Subtype of client for registration
+          enum:
+          - PassengerCar
+          - Truck
+          - Bus
+          - EmergencyVehicle
+          - SchoolBus
+          - MaintenanceVehicle
+          - Pedestrian
+          - Bicycle
+          - Scooter
+          - Motorcycle
+          - RoadSideUnit
+          - Camera
+          - Lidar
+          - Radar
+          - InductiveLoop
+          - MagneticSensor
+          - Platform
+          - Application
+          - NA
+      required:
+      - ClientSubtype
+      - ClientType
     ErrorResponse:
       type: object
       properties:
@@ -572,6 +565,13 @@ components:
           type: string
         description:
           type: string
+    RegistrationResponse:
+      type: object
+      properties:
+        DeviceID:
+          type: string
+        Certificate:
+          $ref: '#/components/schemas/Certificate'
   securitySchemes:
     BearerAuth:
       type: http
