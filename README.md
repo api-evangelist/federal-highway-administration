@@ -1,4 +1,4 @@
-# Federal Highway Administration (federal-highway-administration)
+# Federal Highway Administration
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,54 +64,128 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-The Federal Highway Administration (FHWA) provides stewardship over the
-construction, maintenance and preservation of the Nations highways, bridges
-and tunnels. FHWA also conducts research and provides technical assistance to
-state and local agencies to improve safety, mobility, and to encourage
-innovation.
+The Federal Highway Administration (FHWA) provides stewardship over the construction, maintenance and preservation of the Nations highways, bridges and tunnels. FHWA also conducts research and provides technical assistance to state and local agencies to improve safety, mobility, and to encourage innovation.
 
-**URL:** [Visit APIs.json URL](
-https://raw.githubusercontent.com/api-evangelist/federal-highway-administration/refs/heads/main/apis.yml)
+**Areas:** Federal Government · Transportation · Highways · Bridge · Connected Vehicles · V2X · Open Source · Open Data
 
-## Scope
+## Federal Highway Administration on APIs.io
 
-- **Type:** Contract 
-- **Position:** Consuming 
-- **Access:** 3rd-Party 
+Everything profiled for Federal Highway Administration is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/federal-highway-administration/](https://apis.io/providers/federal-highway-administration/)** — or go straight to one of the APIs or properties below.
 
-## Tags:
+### APIs (12)
 
- - Federal Government, Transportation
+- [Federal Highway Administration](https://apis.io/apis/federal-highway-administration/federal-highway-administration/) — The Federal Highway Administration provides stewardship over the Nation's highways, bridges and tunnels.
+- [Federal Highway Administration Authentication API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-authentication-api/) — Authentication and authorization for Registration and Deposit endpoints
+- [Federal Highway Administration Configuration Rest Controller API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-configuration-rest-controller-api/) — The configuration-rest-controller API from Federal Highway Administration — 3 operation(s) for configuration-rest-controller.
+- [Federal Highway Administration Deposit API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-deposit-api/) — V2X Message Deposit endpoints for deployment to the ETX MQTT Broker
+- [Federal Highway Administration Geofence Deployments API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-geofence-deployments-api/) — Geofence deployment management endpoints
+- [Federal Highway Administration Geofence Expiration API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-geofence-expiration-api/) — Geofence expiration management endpoints
+- [Federal Highway Administration Path Management API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-path-management-api/) — Path management endpoints for GeoJSON-like path data
+- [Federal Highway Administration Registration API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-registration-api/) — ETX client registration and connection management endpoints
+- [Federal Highway Administration Secret Management API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-secret-management-api/) — Secret configuration endpoints
+- [Federal Highway Administration TIM Configuration API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-tim-configuration-api/) — TIM ITIS phrases and metadata configuration endpoints
+- [Federal Highway Administration User Limits Management API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-user-limits-management-api/) — Endpoints for managing user registration limits
+- [Federal Highway Administration Vendor Limits Management API](https://apis.io/apis/federal-highway-administration/federal-highway-administration-vendor-limits-management-api/) — Endpoints for managing vendor-wide registration limits
 
-## Timestamps
+### Published properties
 
-- **Created:** 2024-12-03 
-- **Modified:** 2026-04-28 
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### Federal Highway Administration
+Model Context Protocol servers that expose the API to agents.
 
-The Federal Highway Administration (FHWA) provides stewardship over the
-construction, maintenance and preservation of the Nations highways,
-bridges and tunnels. FHWA also conducts research and provides technical
-assistance to state and local agencies to improve safety, mobility, and to
-encourage innovation.
+- [federal-highway-administration-v2x-app-api](https://apis.io/servers/federal-highway-administration/federal-highway-administration-v2x-app-api/)
 
-**Human URL:** [https://highways.dot.gov](https://highways.dot.gov)
+#### Overlays (1)
 
+OpenAPI overlays, including conversational phrasing for each operation.
 
-#### Tags:
+- [Federal Highway Administration V2X App Api Overlay](https://apis.io/overlays/federal-highway-administration/federal-highway-administration-v2x-app-api-overlay/)
 
- - API
+#### Security (2)
 
-#### Properties
+Authentication, trust centre, and vulnerability disclosure.
 
-- [Documentation](https://highways.dot.gov)
+- [Federal Highway Administration Authentication](https://apis.io/security/federal-highway-administration/federal-highway-administration-authentication/)
+- [Federal Highway Administration Domain Security](https://apis.io/security/federal-highway-administration/federal-highway-administration-domain-security/)
 
-## Maintainers
+#### Plans and pricing (1)
 
-**FN:** Kin Lane
+Published plans, tiers and prices.
 
-**Email:** kin@apievangelist.com
+- [Federal Highway Administration Plans Pricing](https://apis.io/plans/federal-highway-administration/federal-highway-administration-plans-pricing/)
 
+#### Rate limits (1)
+
+Published request limits.
+
+- [Federal Highway Administration Rate Limits](https://apis.io/rate-limits/federal-highway-administration/federal-highway-administration-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Federal Highway Administration Finops](https://apis.io/finops/federal-highway-administration/federal-highway-administration-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://highways.dot.gov)
+- [Documentation](https://usdot-fhwa-stol.github.io/documentation/)
+- [Support](https://github.com/usdot-fhwa-stol/v2x-app-api/issues)
+- [GitHub](https://github.com/FHWA)
+
+## API Evangelist rating
+
+**Kin Score 28.1** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 64.3 |
+| Contract quality | 46.6 |
+| Contract governance | 0.0 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 28.0 |
+| Access clarity | 0.0 |
+
+**Agent readiness 27.2** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 16.7** — Government & Public Sector
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/federal-highway-administration/](https://apis.io/providers/federal-highway-administration/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Federal Highway Administration: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/federal-highway-administration/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
